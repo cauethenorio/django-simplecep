@@ -1,0 +1,19 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+*.so
+
+# Distribution / packaging
+*.egg-info/
+
+# Unit test / coverage reports
+.tox/
+
+# mypy
+.mypy_cache/
+
+# IDEs
+.idea
+.spyderproject
+.spyproject
+.ropeproject
