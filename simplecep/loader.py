@@ -16,7 +16,7 @@ def read_cep_file_by_path(path: str):
     with zipfile.ZipFile(path) as zf:
         with zf.open("ceps.txt") as cep_fp:
             for line in cep_fp:
-                values = line.strip().decode("utf-8").split("\t")
+                values = [v or None for v in line.strip().decode("utf-8").split("\t")]
                 yield dict(zip(fields, values))
 
 
