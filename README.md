@@ -1,4 +1,4 @@
-# django-fast-cep
+# django-simple-cep
 
 * Free software: MIT license
 

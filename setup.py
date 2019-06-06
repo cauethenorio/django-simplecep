@@ -19,15 +19,15 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.md')).read()
 
 setup(
-    name="django-fast-cep",
+    name="django-simple-cep",
     version="0.1.0",
     description="Populated brazilian Correios CEP table into your django app",
     long_description=README,
     license="MIT",
-    url="https://github.com/cauethenorio/django-fast-cep",
+    url="https://github.com/cauethenorio/django-simple-cep",
     author="Cauê Thenório",
     author_email="caue@thenorio.com.br",
-    packages=["django_fast_cep"],
+    packages=["simplecep"],
     python_requires=">=3.5",
     install_requires=requirements,
     extras_require={

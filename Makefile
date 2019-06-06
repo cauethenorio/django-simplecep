@@ -1,10 +1,10 @@
 .PHONY: lint
 
 lint: ## check style with flake8
-	flake8 django_fast_cep
+	flake8 simplecep
 
 black: ## reformat code with black
-	black django_fast_cep
+	black simplecep
 
 black-lint: black lint
 
