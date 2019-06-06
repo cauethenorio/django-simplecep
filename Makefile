@@ -9,7 +9,7 @@ black: ## reformat code with black
 black-lint: black lint
 
 test: ## run tests quickly with the default Python
-	python runtests.py
+	python -Wa runtests.py
 
 test-all: ## run tests on every Python version with tox
 	tox
