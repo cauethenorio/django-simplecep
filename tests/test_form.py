@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.forms import Form
 
 from simplecep.fields import CEPField
 
@@ -28,3 +29,16 @@ class CEPFormTestCase(TestCase):
                 "12345-123": [not_found_message],
             },
         )
+
+    def test_cep_field_maxlength_should_be_9_as_default(self):
+        class SimpleForm(Form):
+            cep = CEPField()
+
+        form = SimpleForm()
+        self.assertIn('maxlength="9"', form.as_p())
+
+        class AnotherSimpleForm(Form):
+            cep = CEPField(max_length=12)
+
+        form = AnotherSimpleForm()
+        self.assertIn('maxlength="12"', form.as_p())

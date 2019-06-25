@@ -13,6 +13,9 @@ class CEPField(forms.CharField):
         "not_found": _("CEP not found"),
     }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def validate_format(self, value: str) -> str:
         match = re.match("^(\\d{5})-?(\\d{3})$", value)
         if match is None:
@@ -37,6 +40,9 @@ class CEPField(forms.CharField):
 
     def widget_attrs(self, widget):
         attrs = super().widget_attrs(widget)
+
+        # set a max_length if it's not defined
+        attrs["maxlength"] = attrs.get("maxlength", 9)
 
         # show numeric keyboard on mobile phones
         # https://css-tricks.com/everything-you-ever-wanted-to-know-about-inputmode/
