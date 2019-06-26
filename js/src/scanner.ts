@@ -22,8 +22,8 @@ function extractCepFieldsMapFromNode(node: HTMLElement): {[key: string]: string}
     }, {});
 }
 
-type FieldDataType = {
-    cepFieldId: string;
+export type FieldDataType = {
+    cepField: HTMLInputElement;
     getCepURL: string;
     fieldsIds: {[key: string]: string};
 };
@@ -32,9 +32,9 @@ export function scanSimpleCepFields(): Array<FieldDataType> {
     const selector = `[data-${withPrefix("autocomplete")}]`;
     let fields: Array<FieldDataType> = [];
 
-    document.querySelectorAll(selector).forEach((node: HTMLElement) => {
+    document.querySelectorAll(selector).forEach((node: HTMLInputElement) => {
         fields.push({
-            cepFieldId: node.id,
+            cepField: node,
             getCepURL: node.dataset.simplecepGetCepUrl,
             fieldsIds: extractCepFieldsMapFromNode(node)
         });

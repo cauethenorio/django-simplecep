@@ -1,7 +1,8 @@
 import {scanSimpleCepFields} from "./scanner";
 
-test("scanSimpleCepFields should find the field and extract its data", () => {
-    document.body.innerHTML = `
+describe("scanSimpleCepFields", () => {
+    test("should find a single field and extract its data", () => {
+        document.body.innerHTML = `
         <p>
             <label for="crazy_field_id">Cep:</label>
             <input
@@ -23,17 +24,17 @@ test("scanSimpleCepFields should find the field and extract its data", () => {
         </p>
     `;
 
-    expect(scanSimpleCepFields()).toEqual([
-        {
-            cepFieldId: "crazy_field_id",
-            getCepURL: "/my-cep-route/00000000/",
-            fieldsIds: {state: "id_estado"}
-        }
-    ]);
-});
+        expect(scanSimpleCepFields()).toEqual([
+            {
+                cepField: document.getElementById("crazy_field_id"),
+                getCepURL: "/my-cep-route/00000000/",
+                fieldsIds: {state: "id_estado"}
+            }
+        ]);
+    });
 
-test("scanSimpleCepFields should find all fields and extract their data", () => {
-    document.body.innerHTML = `
+    test("should find multiple fields and extract their data", () => {
+        document.body.innerHTML = `
         <p><div>
             <input
                 type="text"
@@ -62,21 +63,22 @@ test("scanSimpleCepFields should find all fields and extract their data", () => 
             >
         </div></p>`;
 
-    expect(scanSimpleCepFields()).toEqual([
-        {
-            cepFieldId: "first_one",
-            getCepURL: "/my-cep-route/00000000/",
-            fieldsIds: {state: "id_estado"}
-        },
-        {
-            cepFieldId: "2nd_field",
-            getCepURL: "/another-cep-route/00000000/",
-            fieldsIds: {
-                state: "statez",
-                city: "cityz",
-                district: "districtz",
-                address: "addressz"
+        expect(scanSimpleCepFields()).toEqual([
+            {
+                cepField: document.getElementById("first_one"),
+                getCepURL: "/my-cep-route/00000000/",
+                fieldsIds: {state: "id_estado"}
+            },
+            {
+                cepField: document.getElementById("2nd_field"),
+                getCepURL: "/another-cep-route/00000000/",
+                fieldsIds: {
+                    state: "statez",
+                    city: "cityz",
+                    district: "districtz",
+                    address: "addressz"
+                }
             }
-        }
-    ]);
+        ]);
+    });
 });
