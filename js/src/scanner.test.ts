@@ -1,6 +1,6 @@
 import {scanSimpleCepFields} from "./scanner";
 
-test('scanSimpleCepFields should find the field and extract its data', () => {
+test("scanSimpleCepFields should find the field and extract its data", () => {
     document.body.innerHTML = `
         <p>
             <label for="crazy_field_id">Cep:</label>
@@ -29,11 +29,10 @@ test('scanSimpleCepFields should find the field and extract its data', () => {
             getCepURL: "/my-cep-route/00000000/",
             fieldsIds: {state: "id_estado"}
         }
-    ])
+    ]);
 });
 
-
-test('scanSimpleCepFields should find all fields and extract their data', () => {
+test("scanSimpleCepFields should find all fields and extract their data", () => {
     document.body.innerHTML = `
         <p><div>
             <input
@@ -76,9 +75,8 @@ test('scanSimpleCepFields should find all fields and extract their data', () => 
                 state: "statez",
                 city: "cityz",
                 district: "districtz",
-                address: "addressz",
+                address: "addressz"
             }
         }
-
-    ])
+    ]);
 });

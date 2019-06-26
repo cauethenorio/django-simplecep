@@ -1,13 +1,12 @@
 export class SimpleCepAutocomplete {
-
     options: any;
 
     constructor(options: any) {
-        this.options = options
+        this.options = options;
     }
 
     cleanCep(cep: string): string {
-        return cep.replace('-', '')
+        return cep.replace("-", "");
     }
 
     isValid(cep: string): boolean {
@@ -29,5 +28,5 @@ export class SimpleCepAutocomplete {
         //         .then(this.handleCepRequestData, this.handleCepRequestError)
         //         .always(this.hideLoadingIndicator);
         // }
-    }
+    };
 }
