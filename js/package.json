@@ -5,14 +5,17 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup --config",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "author": "Cauê Thenório <caue@thenorio.com.br>",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
     "rollup": "^1.16.2",
     "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-typescript2": "^0.21.2",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.2"
   }
 }
