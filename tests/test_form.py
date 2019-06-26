@@ -113,3 +113,13 @@ class CEPFormTestCase(TestCase):
         self.assertIn(
             'data-simplecep-address-field-id="{}"'.format(custom_id), field_html
         )
+
+    def test_cep_field_empty_autocomplete_with_id_should_not_lookup_fields(self):
+        class SimpleForm(forms.Form):
+            cep = CEPField(autocomplete_fields={"state": "#some_node_id"})
+
+        form = SimpleForm()
+        field_html = form["cep"].as_widget()
+
+        self.assertIn("data-simplecep-autocomplete", field_html)
+        self.assertIn('data-simplecep-state-field-id="#some_node_id"', field_html)

@@ -39,7 +39,11 @@ class CEPBoundField(forms.BoundField):
             )
         return self.field.autocomplete_fields
 
-    def get_field_id(self, field_name):
+    def get_field_id(self, field_name: str) -> str:
+        # DOM node IDs are allowed - no field lookup will be made
+        if field_name.startswith("#"):
+            return field_name
+
         try:
             bound_field = self.form[field_name]
         except KeyError:
