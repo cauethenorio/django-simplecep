@@ -1,0 +1,18 @@
+{
+  "name": "django-simple-cep",
+  "version": "0.1.0",
+  "description": "Auto-fill brazilian address forms using CEP data",
+  "main": "index.js",
+  "scripts": {
+    "build": "rollup --config",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Cauê Thenório <caue@thenorio.com.br>",
+  "license": "MIT",
+  "devDependencies": {
+    "rollup": "^1.16.2",
+    "rollup-plugin-terser": "^5.0.0",
+    "rollup-plugin-typescript2": "^0.21.2",
+    "typescript": "^3.5.2"
+  }
+}
