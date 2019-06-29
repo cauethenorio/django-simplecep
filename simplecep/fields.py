@@ -38,7 +38,7 @@ class CEPBoundField(forms.BoundField):
 
     def get_field_id(self, field_name: str) -> str:
         # DOM node IDs are allowed - no field lookup will be made
-        if field_name.startswith("#"):
+        if field_name[0] in ("#", "."):
             return field_name
 
         try:
@@ -50,7 +50,9 @@ class CEPBoundField(forms.BoundField):
                     field_name, list(self.form.fields.keys() - [self.name])
                 )
             )
-        return bound_field.field.widget.attrs.get("id") or bound_field.auto_id
+        return "#{}".format(
+            bound_field.field.widget.attrs.get("id") or bound_field.auto_id
+        )
 
     def build_widget_attrs(self, attrs, widget=None):
         attrs = super().build_widget_attrs(attrs, widget)
@@ -63,10 +65,14 @@ class CEPBoundField(forms.BoundField):
                     {
                         "baseCepURL": self.get_getcep_url(),
                         "dataFields": [
-                            {field_type: self.get_field_id(field_name)}
+                            {
+                                "type": field_type,
+                                "selector": self.get_field_id(field_name),
+                            }
                             for field_type, field_name in fields.items()
                         ],
-                    }
+                    },
+                    sort_keys=True,
                 )
 
         return attrs

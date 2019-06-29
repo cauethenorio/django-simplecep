@@ -9,7 +9,7 @@ from simplecep.fields import CEPField
 
 
 def html_decode(html_fragment) -> str:
-    return html.escape(json.dumps(html_fragment))
+    return html.escape(json.dumps(html_fragment, sort_keys=True))
 
 
 class CEPFormTestCase(TestCase):
@@ -113,7 +113,10 @@ class CEPFormTestCase(TestCase):
 
         self.assertIn("data-simplecep-autofill=", field_html)
         self.assertIn(
-            html_decode([{"district": form["bairro_xyz"].auto_id}]), field_html
+            html_decode(
+                [{"type": "district", "selector": "#" + form["bairro_xyz"].auto_id}]
+            ),
+            field_html,
         )
 
     def test_cep_field_should_correctly_use_custom_fields_ids(self):
@@ -127,14 +130,21 @@ class CEPFormTestCase(TestCase):
         field_html = form["cep"].as_widget()
 
         self.assertIn("data-simplecep-autofill", field_html)
-        self.assertIn(html_decode([{"address": custom_id}]), field_html)
+        self.assertIn(
+            html_decode([{"type": "address", "selector": "#" + custom_id}]), field_html
+        )
 
     def test_cep_field_empty_autofill_with_id_should_not_lookup_fields(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autofill={"state": "#some_node_id"})
+            cep = CEPField(autofill={"state": "#some_node_id", "district": ".bairro"})
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
 
         self.assertIn("data-simplecep-autofill", field_html)
-        self.assertIn(html_decode([{"state": "#some_node_id"}]), field_html)
+        self.assertIn(
+            html_decode({"type": "district", "selector": ".bairro"}), field_html
+        )
+        self.assertIn(
+            html_decode({"type": "state", "selector": "#some_node_id"}), field_html
+        )
