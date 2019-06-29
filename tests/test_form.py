@@ -1,8 +1,15 @@
+import html
+import json
+
 from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 from django import forms
 
 from simplecep.fields import CEPField
+
+
+def html_decode(html_fragment) -> str:
+    return html.escape(json.dumps(html_fragment))
 
 
 class CEPFormTestCase(TestCase):
@@ -88,16 +95,26 @@ class CEPFormTestCase(TestCase):
             form = SimpleForm()
             form["cep"].as_widget()
 
+    def test_cep_field_autocomplete_should_send_baseurl(self):
+        class SimpleForm(forms.Form):
+            cep = CEPField(autocomplete_fields={"city": "#cidade"})
+
+        form = SimpleForm()
+        field_html = form["cep"].as_widget()
+        self.assertIn(html.escape('"baseCepURL": "/cep/00000000/"'), field_html)
+
     def test_cep_field_empty_autocomplete_fields_should_create_attrs(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"state": "estado"})
-            estado = forms.CharField()
+            cep = CEPField(autocomplete_fields={"district": "bairro_xyz"})
+            bairro_xyz = forms.CharField()
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
 
-        self.assertIn("data-simplecep-autocomplete", field_html)
-        self.assertIn('data-simplecep-state-field-id="id_estado"', field_html)
+        self.assertIn("data-simplecep-autocomplete=", field_html)
+        self.assertIn(
+            html_decode([{"district": form["bairro_xyz"].auto_id}]), field_html
+        )
 
     def test_cep_field_should_correctly_use_custom_fields_ids(self):
         custom_id = "my_custom_id"
@@ -110,9 +127,7 @@ class CEPFormTestCase(TestCase):
         field_html = form["cep"].as_widget()
 
         self.assertIn("data-simplecep-autocomplete", field_html)
-        self.assertIn(
-            'data-simplecep-address-field-id="{}"'.format(custom_id), field_html
-        )
+        self.assertIn(html_decode([{"address": custom_id}]), field_html)
 
     def test_cep_field_empty_autocomplete_with_id_should_not_lookup_fields(self):
         class SimpleForm(forms.Form):
@@ -122,4 +137,4 @@ class CEPFormTestCase(TestCase):
         field_html = form["cep"].as_widget()
 
         self.assertIn("data-simplecep-autocomplete", field_html)
-        self.assertIn('data-simplecep-state-field-id="#some_node_id"', field_html)
+        self.assertIn(html_decode([{"state": "#some_node_id"}]), field_html)

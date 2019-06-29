@@ -1,3 +1,4 @@
+import json
 import re
 
 from django import forms
@@ -62,13 +63,15 @@ class CEPBoundField(forms.BoundField):
             fields = self.validate_and_get_fields()
 
             if len(fields.keys()):
-                # tell JS this field is an CEP autocomplete source
-                attrs[with_prefix("autocomplete")] = True
-                attrs[with_prefix("get-cep-url")] = self.get_getcep_url()
-
-                for field_type, field_name in fields.items():
-                    attr_key = with_prefix("{}-field-id").format(field_type)
-                    attrs[attr_key] = self.get_field_id(field_name)
+                attrs[with_prefix("autocomplete")] = json.dumps(
+                    {
+                        "baseCepURL": self.get_getcep_url(),
+                        "dataFields": [
+                            {field_type: self.get_field_id(field_name)}
+                            for field_type, field_name in fields.items()
+                        ],
+                    }
+                )
 
         return attrs
 
