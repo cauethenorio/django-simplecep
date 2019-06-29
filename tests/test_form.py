@@ -51,67 +51,67 @@ class CEPFormTestCase(TestCase):
         form = AnotherSimpleForm()
         self.assertIn('maxlength="12"', form["cep"].as_widget())
 
-    def test_cep_field_should_not_add_autocomplete_attrs_by_default(self):
+    def test_cep_field_should_not_add_autofill_attrs_by_default(self):
         class SimpleForm(forms.Form):
             cep = CEPField()
 
         form = SimpleForm()
-        self.assertNotIn('data-simplecep-autocomplete"', form["cep"].as_widget())
+        self.assertNotIn('data-simplecep-autofill"', form["cep"].as_widget())
 
-    def test_cep_field_autcomplete_should_fail_with_wrong_keys(self):
+    def test_cep_autofill_should_fail_with_wrong_keys(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"states": "state"})
+            cep = CEPField(autofill={"states": "state"})
 
         with self.assertRaisesMessage(
             ImproperlyConfigured,
-            "Invalid CEPField autocomplete_fields param field type(s): ['states']",
+            "Invalid CEPField autofill param field type(s): ['states']",
         ):
             form = SimpleForm()
             form["cep"].as_widget()
 
-    def test_cep_field_autcomplete_should_fail_with_wrong_field_name(self):
+    def test_cep_autofill_should_fail_with_wrong_field_name(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"state": "eztado"})
+            cep = CEPField(autofill={"state": "eztado"})
             estado = forms.CharField()
 
         with self.assertRaisesMessage(
             ImproperlyConfigured,
-            "CEPField autocomplete_fields field not found: 'eztado'. "
+            "CEPField autofill field not found: 'eztado'. "
             "Valid form fields: ['estado']",
         ):
             form = SimpleForm()
             form["cep"].as_widget()
 
     @override_settings(ROOT_URLCONF="tests.empty_urls")
-    def test_cep_field_autocomplete_should_fail_without_getcep_endpoint(self):
+    def test_cep_field_autofill_should_fail_without_getcep_endpoint(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"state": "state"})
+            cep = CEPField(autofill={"state": "state"})
             state = forms.CharField()
 
         with self.assertRaisesMessage(
             ImproperlyConfigured,
-            "CEPField autcomplete_fields used but no 'simplecep:get-cep' view found",
+            "CEPField autofill used but no 'simplecep:get-cep' view found",
         ):
             form = SimpleForm()
             form["cep"].as_widget()
 
-    def test_cep_field_autocomplete_should_send_baseurl(self):
+    def test_cep_field_autofill_should_send_baseurl(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"city": "#cidade"})
+            cep = CEPField(autofill={"city": "#cidade"})
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
         self.assertIn(html.escape('"baseCepURL": "/cep/00000000/"'), field_html)
 
-    def test_cep_field_empty_autocomplete_fields_should_create_attrs(self):
+    def test_cep_field_empty_autofill_should_create_attrs(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"district": "bairro_xyz"})
+            cep = CEPField(autofill={"district": "bairro_xyz"})
             bairro_xyz = forms.CharField()
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
 
-        self.assertIn("data-simplecep-autocomplete=", field_html)
+        self.assertIn("data-simplecep-autofill=", field_html)
         self.assertIn(
             html_decode([{"district": form["bairro_xyz"].auto_id}]), field_html
         )
@@ -120,21 +120,21 @@ class CEPFormTestCase(TestCase):
         custom_id = "my_custom_id"
 
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"address": "endereco"})
+            cep = CEPField(autofill={"address": "endereco"})
             endereco = forms.CharField(widget=forms.TextInput(attrs={"id": custom_id}))
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
 
-        self.assertIn("data-simplecep-autocomplete", field_html)
+        self.assertIn("data-simplecep-autofill", field_html)
         self.assertIn(html_decode([{"address": custom_id}]), field_html)
 
-    def test_cep_field_empty_autocomplete_with_id_should_not_lookup_fields(self):
+    def test_cep_field_empty_autofill_with_id_should_not_lookup_fields(self):
         class SimpleForm(forms.Form):
-            cep = CEPField(autocomplete_fields={"state": "#some_node_id"})
+            cep = CEPField(autofill={"state": "#some_node_id"})
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
 
-        self.assertIn("data-simplecep-autocomplete", field_html)
+        self.assertIn("data-simplecep-autofill", field_html)
         self.assertIn(html_decode([{"state": "#some_node_id"}]), field_html)

@@ -10,10 +10,6 @@ from django.utils.translation import gettext_lazy as _
 from simplecep.models import Cep
 
 
-def with_prefix(field: str) -> str:
-    return "data-simplecep-{}".format(field)
-
-
 class CEPBoundField(forms.BoundField):
     valid_field_types = ("state", "city", "district", "address")
 
@@ -23,22 +19,22 @@ class CEPBoundField(forms.BoundField):
             return reverse("simplecep:get-cep", kwargs={"cep": "00000000"})
         except NoReverseMatch:
             raise ImproperlyConfigured(
-                "CEPField autcomplete_fields used but no "
+                "CEPField autofill used but no "
                 "'simplecep:get-cep' view found. Include simplecep "
                 "URLconf in your project urls.py"
             )
 
     def validate_and_get_fields(self):
-        fields_keys = self.field.autocomplete_fields.keys()
+        fields_keys = self.field.autofill_fields.keys()
         valid_field_types = self.valid_field_types
 
         invalid_fields = list(fields_keys - valid_field_types)
         if len(invalid_fields):
             raise ImproperlyConfigured(
-                "Invalid CEPField autocomplete_fields param field "
+                "Invalid CEPField autofill param field "
                 "type(s): {}. Valid types: {}".format(invalid_fields, valid_field_types)
             )
-        return self.field.autocomplete_fields
+        return self.field.autofill_fields
 
     def get_field_id(self, field_name: str) -> str:
         # DOM node IDs are allowed - no field lookup will be made
@@ -49,7 +45,7 @@ class CEPBoundField(forms.BoundField):
             bound_field = self.form[field_name]
         except KeyError:
             raise ImproperlyConfigured(
-                "CEPField autocomplete_fields field not found: '{}'. "
+                "CEPField autofill field not found: '{}'. "
                 "Valid form fields: {}".format(
                     field_name, list(self.form.fields.keys() - [self.name])
                 )
@@ -59,11 +55,11 @@ class CEPBoundField(forms.BoundField):
     def build_widget_attrs(self, attrs, widget=None):
         attrs = super().build_widget_attrs(attrs, widget)
 
-        if self.field.autocomplete_fields is not None:
+        if self.field.autofill_fields is not None:
             fields = self.validate_and_get_fields()
 
             if len(fields.keys()):
-                attrs[with_prefix("autocomplete")] = json.dumps(
+                attrs["data-simplecep-autofill"] = json.dumps(
                     {
                         "baseCepURL": self.get_getcep_url(),
                         "dataFields": [
@@ -82,9 +78,9 @@ class CEPField(forms.CharField):
         "not_found": _("CEP not found"),
     }
 
-    def __init__(self, *args, autocomplete_fields=None, **kwargs):
+    def __init__(self, *args, autofill=None, **kwargs):
         super().__init__(*args, **kwargs)
-        self.autocomplete_fields = autocomplete_fields
+        self.autofill_fields = autofill
 
     def validate_format(self, value: str) -> str:
         match = re.match("^(\\d{5})-?(\\d{3})$", value)

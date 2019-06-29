@@ -7,7 +7,7 @@ export default {
     output: {
         file: 'dist/bundle.js',
         format: 'iife',
-        name: 'SimpleCepAutocomplete',
+        name: 'SimplecepAutofill',
     },
     plugins: [
         typescript({
