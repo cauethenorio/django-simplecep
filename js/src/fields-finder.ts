@@ -5,7 +5,7 @@ type DataFieldType = typeof dataFieldTypes[number];
 export type AutofillFieldDataType = {
     cepField: HTMLInputElement;
     baseCepURL: string;
-    dataFields: [{type: DataFieldType; selector: string}];
+    dataFields: Array<{type: DataFieldType; selector: string}>;
 };
 
 export function querySimplecepAutofillFields(): Array<AutofillFieldDataType> {
