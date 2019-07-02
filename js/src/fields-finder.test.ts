@@ -1,4 +1,4 @@
-import {querySimplecepAutofillFields} from "./scanner";
+import {querySimplecepAutofillFields} from "./fields-finder";
 
 describe("querySimplecepAutofillFields", () => {
     test("should find a single field and extract its data", () => {
