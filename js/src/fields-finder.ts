@@ -18,6 +18,8 @@ export function querySimplecepAutofillFields(): Array<AutofillFieldDataType> {
                 cepField.dataset.simplecepAutofill
             );
 
+            // delete the attr to avoid adding the same handler multiple times
+            delete cepField.dataset.simplecepAutofill;
             const {baseCepURL, dataFields} = autoFill;
             fields.push({cepField, baseCepURL, dataFields});
         } catch {}

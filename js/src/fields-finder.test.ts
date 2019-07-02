@@ -1,7 +1,7 @@
 import {querySimplecepAutofillFields} from "./fields-finder";
 
 describe("querySimplecepAutofillFields", () => {
-    test("should find a single field and extract its data", () => {
+    it("should find a single field and extract its data", () => {
         document.body.innerHTML = `
         <p>
             <label for="crazy_field_id">Cep:</label>
@@ -30,7 +30,7 @@ describe("querySimplecepAutofillFields", () => {
         ]);
     });
 
-    test("should find multiple fields and extract their data", () => {
+    it("should find multiple fields and extract their data", () => {
         document.body.innerHTML = `
         <p><div>
             <input
@@ -68,5 +68,11 @@ describe("querySimplecepAutofillFields", () => {
                 ]
             }
         ]);
+    });
+
+    it("should remove the node attribute after getting the data", () => {
+        document.body.innerHTML = `<input data-simplecep-autofill="{&quot;key&quot;: &quot;value&quot;}">`;
+        expect(querySimplecepAutofillFields()).toHaveLength(1);
+        expect(querySimplecepAutofillFields()).toHaveLength(0);
     });
 });
