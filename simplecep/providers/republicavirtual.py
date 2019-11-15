@@ -26,7 +26,7 @@ class RepublicVirtualCEPProvider(BaseCEPProvider):
 
         return CEPAddress(
             cep=cep,
-            street=fields.get("street"),
+            street=self.normalize_street(fields.get("street")),
             state=fields["uf"],
             neighborhood=fields.get("bairro"),
             city=fields["cidade"],

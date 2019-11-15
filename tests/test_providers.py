@@ -68,7 +68,17 @@ class ProvidersTestCase(TestCase):
                 "state": "CE",
                 "city": "Missão Velha",
                 "neighborhood": "Centro",
-                "street": "Rua José Sobreira da Cruz 271",
+                "street": "Rua José Sobreira da Cruz",
+            },
+        )
+        self.assert_providers_return_cep_address(
+            "69096-970",
+            {
+                "cep": "69096970",
+                "state": "AM",
+                "city": "Manaus",
+                "neighborhood": "Cidade Nova",
+                "street": "Avenida Noel Nutels",
             },
         )
 

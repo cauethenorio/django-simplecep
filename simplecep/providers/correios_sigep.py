@@ -36,7 +36,7 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
             state=fields.get("uf"),
             city=fields.get("cidade"),
             neighborhood=fields.get("bairro"),
-            street=fields.get("end"),
+            street=self.normalize_street(fields.get("end")),
         )
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
@@ -49,11 +49,3 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
         fields = self.unenvelope(response)
         if fields is not None:
             return self.convert_to_cep_address(fields)
-
-
-resp = CorreiosSIGEPCEPProvider().get_cep_data("01001000")
-
-if resp is not None:
-    print(resp.__dict__)
-else:
-    print("None")

@@ -23,5 +23,5 @@ class ViaCEPProvider(BaseCEPProvider):
             state=fields.get("uf"),
             city=fields.get("localidade"),
             neighborhood=fields.get("bairro"),
-            street=fields.get("logradouro"),
+            street=self.normalize_street(fields.get("logradouro")),
         )

@@ -40,6 +40,16 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
         match = re.match("^(\\d{5})-?(\\d{3})$", cep)
         return "".join(match.groups())
 
+    def normalize_street(self, street: Optional[str]) -> Optional[str]:
+        """
+        Remove numbers from street names (i.e. post office agency ceps)
+        """
+        if street is not None:
+            match = re.match("^([^,]+),?\s\d+$", street)
+            if match is not None:
+                return match.groups()[0]
+            return street
+
     @abc.abstractmethod
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
         """
