@@ -2,13 +2,13 @@ from django.test import TestCase
 
 from simplecep.providers import (
     CorreiosSIGEPCEPProvider,
-    RepublicVirtualCEPProvider,
+    RepublicaVirtualCEPProvider,
     ViaCEPProvider,
 )
 
 
 class ProvidersTestCase(TestCase):
-    providers = (CorreiosSIGEPCEPProvider, RepublicVirtualCEPProvider, ViaCEPProvider)
+    providers = (CorreiosSIGEPCEPProvider, RepublicaVirtualCEPProvider, ViaCEPProvider)
 
     def assert_providers_return_cep_address(self, cep, expected):
         for Provider in self.providers:

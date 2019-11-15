@@ -1,4 +1,4 @@
-from .base import BaseCEPProvider, CEPAddress
-from .correios_sigep import CorreiosSIGEPCEPProvider
-from .republicavirtual import RepublicVirtualCEPProvider
-from .viacep import ViaCEPProvider
+from .base import BaseCEPProvider, CEPAddress  # noqa
+from .correios_sigep import CorreiosSIGEPCEPProvider  # noqa
+from .republicavirtual import RepublicaVirtualCEPProvider  # noqa
+from .viacep import ViaCEPProvider  # noqa

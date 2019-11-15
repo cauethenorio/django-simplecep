@@ -4,9 +4,9 @@ from typing import Optional
 from .base import BaseCEPProvider, CEPAddress
 
 
-class RepublicVirtualCEPProvider(BaseCEPProvider):
+class RepublicaVirtualCEPProvider(BaseCEPProvider):
     def get_api_url(self, cep: str) -> str:
-        return f"http://cep.republicavirtual.com.br/web_cep.php?cep={self.normalize_cep(cep)}&formato=json"
+        return f"http://cep.republicavirtual.com.br/web_cep.php?cep={self.clean_cep(cep)}&formato=json"
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
         raw_fields = loads(
@@ -14,7 +14,7 @@ class RepublicVirtualCEPProvider(BaseCEPProvider):
         )
 
         if int(raw_fields["resultado"]) > 0:
-            return self.convert_to_cep_address(raw_fields, self.normalize_cep(cep))
+            return self.clean_and_add_cep(raw_fields, cep)
         return None
 
     def clean_state(self, state: str) -> str:
@@ -25,17 +25,23 @@ class RepublicVirtualCEPProvider(BaseCEPProvider):
         """
         return state.split(" ")[0].strip()
 
-    def convert_to_cep_address(self, raw_fields, cep: str) -> CEPAddress:
+    def clean_and_add_cep(self, raw_fields, cep: str) -> CEPAddress:
         # remove empty string fields
-        fields = {k: value.strip() for k, value in raw_fields.items() if value}
+        fields = {
+            k: value.strip()
+            for k, value in raw_fields.items()
+            if value is not None and value.strip()
+        }
 
         if fields.get("logradouro") and fields.get("tipo_logradouro"):
             fields["street"] = f"{fields['tipo_logradouro']} {fields['logradouro']}"
 
-        return CEPAddress(
-            cep=cep,
-            street=self.normalize_street(fields.get("street")),
-            state=self.clean_state(fields["uf"]),
-            neighborhood=fields.get("bairro"),
-            city=fields["cidade"],
+        return self.clean(
+            {
+                "cep": cep,
+                "state": self.clean_state(fields["uf"]),
+                "city": fields["cidade"],
+                "neighborhood": fields.get("bairro"),
+                "street": fields.get("street"),
+            }
         )

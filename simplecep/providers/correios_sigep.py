@@ -16,7 +16,7 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
                <soapenv:Header/>
                <soapenv:Body>
                   <cli:consultaCEP>
-                     <cep>{self.normalize_cep(cep)}</cep>
+                     <cep>{self.clean_cep(cep)}</cep>
                   </cli:consultaCEP>
                </soapenv:Body>
             </soapenv:Envelope>
@@ -30,13 +30,15 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
             return {field.tag: field.text for field in return_node}
         return None
 
-    def convert_to_cep_address(self, fields) -> CEPAddress:
-        return CEPAddress(
-            cep=self.normalize_cep(fields["cep"]),
-            state=fields.get("uf"),
-            city=fields.get("cidade"),
-            neighborhood=fields.get("bairro"),
-            street=self.normalize_street(fields.get("end")),
+    def clean(self, fields) -> CEPAddress:
+        return super().clean(
+            {
+                "cep": fields["cep"],
+                "state": fields["uf"],
+                "city": fields["cidade"],
+                "neighborhood": fields.get("bairro"),
+                "street": fields.get("end"),
+            }
         )
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
@@ -48,4 +50,4 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
         )
         fields = self.unenvelope(response)
         if fields is not None:
-            return self.convert_to_cep_address(fields)
+            return self.clean(fields)
