@@ -1,4 +1,5 @@
-import {installHandlers, HandlerParams} from "./install-handlers";
+import {HandlerParams} from "./types";
+import {installHandlers} from "./install-handlers";
 
 const getById = (id: string): HTMLElement | null => document.getElementById(id);
 

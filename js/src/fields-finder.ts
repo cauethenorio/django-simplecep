@@ -1,12 +1,4 @@
-const dataFieldTypes = ["state", "city", "district", "address"] as const;
-
-type DataFieldType = typeof dataFieldTypes[number];
-
-export type AutofillFieldDataType = {
-    cepField: HTMLInputElement;
-    baseCepURL: string;
-    dataFields: Array<{type: DataFieldType; selector: string}>;
-};
+import {AutofillFieldDataType} from "./types";
 
 export function querySimplecepAutofillFields(): Array<AutofillFieldDataType> {
     const selector = "[data-simplecep-autofill]";

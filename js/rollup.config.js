@@ -8,7 +8,7 @@ export default (commandLineArgs) => {
     return ({
         input: 'src/index.ts',
         output: {
-            file: '../simplecep/static/simplecep.js',
+            file: '../simplecep/static/simplecep/simplecep-autofill.js',
             format: 'iife',
             name: 'SimplecepAutofill',
         },

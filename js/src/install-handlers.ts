@@ -1,19 +1,15 @@
-import {AutofillFieldDataType} from "./fields-finder";
+import {HandlerParams, AutofillFieldDataType} from "./types";
 
-export type HandlerParams = {
-    fieldData: AutofillFieldDataType;
-    getCepURL: (cep: string) => string;
-    getDataFields: ReturnType<typeof createDataFieldsGetter>;
-    dispatch: ReturnType<typeof createDispatcher>;
-    addListener: ReturnType<typeof createListenerFactory>;
-};
-
-const createDispatcher = (el: HTMLElement) => (eventName: string, detail: any) => {
+const createDispatcher = (el: HTMLElement): HandlerParams["dispatch"] => (
+    eventName: string,
+    detail: any
+) => {
     const event = new CustomEvent(eventName, {detail});
+    console.log("dispatching " + eventName);
     el.dispatchEvent(event);
 };
 
-const createListenerFactory = (el: HTMLElement) => <D>(
+const createListenerFactory = (el: HTMLElement): HandlerParams["addListener"] => <D>(
     eventName: string,
     listener: (detail: D, e: CustomEvent<D>) => any
 ) =>
@@ -23,7 +19,7 @@ const createListenerFactory = (el: HTMLElement) => <D>(
 
 const createDataFieldsGetter = (
     dataFields: AutofillFieldDataType["dataFields"]
-) => () =>
+): HandlerParams["getDataFields"] => () =>
     dataFields.map(({type, selector}) => ({
         type,
         els: Array.prototype.slice
@@ -36,7 +32,8 @@ export function installHandlers(
     handlers: Array<(args: HandlerParams) => void>
 ) {
     const {baseCepURL, dataFields} = fieldData;
-    const getCepURL = (cep: string): string => baseCepURL.replace("00000000", cep);
+    const getCepURL: HandlerParams["getCepURL"] = (cep: string): string =>
+        baseCepURL.replace("00000000", cep);
     const getDataFields = createDataFieldsGetter(dataFields);
 
     const dispatch = createDispatcher(fieldData.cepField);
