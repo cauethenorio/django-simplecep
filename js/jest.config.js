@@ -3,5 +3,8 @@ module.exports = {
     testEnvironment: 'jsdom',
     roots: ["<rootDir>/src"],
     collectCoverage: true,
-    collectCoverageFrom: ["<rootDir>/src/**/*.ts"],
+    collectCoverageFrom: [
+        "<rootDir>/src/**/*.ts",
+        "!<rootDir>/src/**/types.ts",
+    ],
 };

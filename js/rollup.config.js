@@ -2,17 +2,21 @@ import typescript from 'rollup-plugin-typescript2';
 import {terser} from "rollup-plugin-terser";
 
 
-export default {
-    input: 'src/index.ts',
-    output: {
-        file: 'dist/bundle.js',
-        format: 'iife',
-        name: 'SimplecepAutofill',
-    },
-    plugins: [
-        typescript({
-            typescript: require('typescript'),
-        }),
-        terser()
-    ]
-};
+export default (commandLineArgs) => {
+    const debug = commandLineArgs.configDebug === true;
+
+    return ({
+        input: 'src/index.ts',
+        output: {
+            file: '../simplecep/static/simplecep.js',
+            format: 'iife',
+            name: 'SimplecepAutofill',
+        },
+        plugins: [
+            typescript({
+                typescript: require('typescript'),
+            }),
+            debug? undefined : terser()
+        ]
+    });
+}

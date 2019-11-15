@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rollup --config",
+    "watch": "rollup --config --configDebug --watch",
     "test": "jest",
     "prettier": "prettier --write \"src/**/*.ts\""
   },
