@@ -17,6 +17,14 @@ class RepublicVirtualCEPProvider(BaseCEPProvider):
             return self.convert_to_cep_address(raw_fields, self.normalize_cep(cep))
         return None
 
+    def clean_state(self, state: str) -> str:
+        """
+        Republica Virtual API returns a different state value when searching
+        for a district address. (i.e. "RO  - Distrito" for 76840-000.
+        So let's clean it!
+        """
+        return state.split(" ")[0].strip()
+
     def convert_to_cep_address(self, raw_fields, cep: str) -> CEPAddress:
         # remove empty string fields
         fields = {k: value.strip() for k, value in raw_fields.items() if value}
@@ -27,7 +35,7 @@ class RepublicVirtualCEPProvider(BaseCEPProvider):
         return CEPAddress(
             cep=cep,
             street=self.normalize_street(fields.get("street")),
-            state=fields["uf"],
+            state=self.clean_state(fields["uf"]),
             neighborhood=fields.get("bairro"),
             city=fields["cidade"],
         )

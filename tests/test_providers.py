@@ -93,6 +93,16 @@ class ProvidersTestCase(TestCase):
                 "street": "Rua Primeiro de Março",
             },
         )
+        self.assert_providers_return_cep_address(
+            "96010-900",
+            {
+                "cep": "96010900",
+                "state": "RS",
+                "city": "Pelotas",
+                "neighborhood": "Centro",
+                "street": "Rua Tiradentes",
+            },
+        )
 
     def test_valid_cep_with_district_should_be_normalized(self):
         self.assert_providers_return_cep_address(
