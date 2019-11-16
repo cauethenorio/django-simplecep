@@ -1,5 +1,6 @@
 from typing import Dict, Optional
 from xml.etree import cElementTree as ET
+from urllib.error import HTTPError
 
 from .base import BaseCEPProvider, CEPAddress
 
@@ -41,13 +42,37 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
             }
         )
 
-    def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
-        response = self.request(
-            self.SIGEP_URL,
-            data=self.envelope(cep),
-            method="POST",
-            response_encoding="latin1",
+    def is_cep_not_found_error(self, exc):
+        """
+        Check if the 500 response is about a not found CEP.
+        We don't want throw errors for that.
+        """
+        if exc.status != 500:
+            return False
+
+        error_response = exc.read().decode("latin1")
+        try:
+            message = ET.fromstring(error_response).find(".//faultstring")
+        except ET.ParseError:
+            return False
+        return message is not None and message.text in (
+            "CEP INVÁLIDO",
+            "CEP NAO ENCONTRADO",
         )
+
+    def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
+        try:
+            response = self.request(
+                self.SIGEP_URL,
+                data=self.envelope(cep),
+                method="POST",
+                response_encoding="latin1",
+            )
+        except HTTPError as e:
+            if self.is_cep_not_found_error(e):
+                return None
+            raise
+
         fields = self.unenvelope(response)
         if fields is not None:
             return self.clean(fields)

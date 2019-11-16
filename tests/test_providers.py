@@ -14,7 +14,10 @@ class ProvidersTestCase(TestCase):
         for Provider in self.providers:
             with self.subTest(provider=Provider):
                 cep_address = Provider().get_cep_data(cep)
-                self.assertEqual(cep_address.to_dict(), expected)
+                if expected is None:
+                    self.assertEqual(cep_address, expected)
+                else:
+                    self.assertEqual(cep_address.to_dict(), expected)
 
     def test_valid_complete_cep(self):
         self.assert_providers_return_cep_address(
@@ -125,3 +128,9 @@ class ProvidersTestCase(TestCase):
                 "street": None,
             },
         )
+
+    def test_inexistent_cep_should_return_none(self):
+        self.assert_providers_return_cep_address("00000000", None)
+        self.assert_providers_return_cep_address("11111111", None)
+        self.assert_providers_return_cep_address("99999999", None)
+        self.assert_providers_return_cep_address("01111110", None)
