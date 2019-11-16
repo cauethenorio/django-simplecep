@@ -3,13 +3,13 @@ from django.http import JsonResponse
 from django.views import View
 
 
-from .models import Cep
+from .models import CachedCep
 
 
 class CEPView(View):
     def get(self, request, *args, cep=None):
         try:
-            cep = Cep.objects.get(cep=cep)
+            cep = CachedCep.objects.get(cep=cep)
             return JsonResponse(model_to_dict(cep))
-        except Cep.DoesNotExist:
+        except CachedCep.DoesNotExist:
             return JsonResponse({"error": "cep_not_found"}, status=404)
