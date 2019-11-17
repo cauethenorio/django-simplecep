@@ -1,4 +1,7 @@
-from .base import BaseCEPProvider, CEPAddress  # noqa
-from .correios_sigep import CorreiosSIGEPCEPProvider  # noqa
-from .republicavirtual import RepublicaVirtualCEPProvider  # noqa
-from .viacep import ViaCEPProvider  # noqa
+from .base import BaseCEPProvider, CepProviderFetchError  # noqa
+from .get_installed import get_installed_providers  # noqa
+from .default import (
+    CorreiosSIGEPCEPProvider,
+    ViaCEPProvider,
+    RepublicaVirtualCEPProvider,
+)  # noqa

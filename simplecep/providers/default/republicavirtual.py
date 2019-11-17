@@ -1,10 +1,13 @@
 from json import loads
 from typing import Optional
 
-from .base import BaseCEPProvider, CEPAddress
+from ..base import BaseCEPProvider, CEPAddress
 
 
 class RepublicaVirtualCEPProvider(BaseCEPProvider):
+    # all providers should have an identifier */
+    provider_id = "republicavirtual"
+
     def get_api_url(self, cep: str) -> str:
         return f"http://cep.republicavirtual.com.br/web_cep.php?cep={self.clean_cep(cep)}&formato=json"
 

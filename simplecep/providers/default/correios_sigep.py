@@ -2,10 +2,13 @@ from typing import Dict, Optional
 from xml.etree import cElementTree as ET
 from urllib.error import HTTPError
 
-from .base import BaseCEPProvider, CEPAddress
+from ..base import BaseCEPProvider, CEPAddress
 
 
 class CorreiosSIGEPCEPProvider(BaseCEPProvider):
+    # all providers should have a name */
+    provider_id = "correios_sigep"
+
     SIGEP_URL = (
         "https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente"
     )

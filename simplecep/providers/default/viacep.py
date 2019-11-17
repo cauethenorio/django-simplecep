@@ -1,16 +1,19 @@
 from json import loads
 from typing import Optional
 
-from .base import BaseCEPProvider, CEPAddress
+from ..base import BaseCEPProvider, CEPAddress
 
 
 class ViaCEPProvider(BaseCEPProvider):
+    # all providers should have an identifier */
+    provider_id = "viacep"
+
     def get_api_url(self, cep: str) -> str:
         return f"https://viacep.com.br/ws/{self.clean_cep(cep)}/json/unicode/"
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
         raw_fields = loads(self.request(self.get_api_url(cep)))
-        if raw_fields.get("erro") != True:
+        if raw_fields.get("erro") is not True:
             return self.clean(raw_fields)
         return None
 

@@ -1,29 +1,23 @@
 import abc
 import re
+import socket
 from urllib.request import urlopen, Request
+from urllib.error import URLError, HTTPError
 
 from typing import Optional, Dict
 
+from .. import CEPAddress
 
-class CEPAddress:
-    cep: str
-    street: Optional[str]
-    state: str
-    neighborhood: Optional[str]
-    city: str
 
-    def __init__(self, cep=None, state=None, city=None, neighborhood=None, street=None):
-        self.cep = cep
-        self.state = state
-        self.city = city
-        self.neighborhood = neighborhood
-        self.street = street
-
-    def to_dict(self):
-        return self.__dict__
+class CepProviderFetchError(Exception):
+    pass
 
 
 class BaseCEPProvider(metaclass=abc.ABCMeta):
+
+    # all providers should have an identifier */
+    provider_id = None
+
     def __init(self):
         pass
 
@@ -34,7 +28,10 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
         Helper function to perform HTTP requests
         """
         req = Request(url, data=data, method=method, headers=headers or {})
-        return urlopen(req, timeout=2).read().decode(response_encoding)
+        try:
+            return urlopen(req, timeout=0.1).read().decode(response_encoding)
+        except (URLError, socket.timeout) as error:
+            raise CepProviderFetchError(error)
 
     def clean_cep(self, cep: str) -> str:
         match = re.match("^(\\d{5})-?(\\d{3})$", cep)
