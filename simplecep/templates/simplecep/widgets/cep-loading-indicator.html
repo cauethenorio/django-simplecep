@@ -1,0 +1,45 @@
+<style>
+    @keyframes slidein {
+        0%, 80%, 100% {opacity: 0;}
+        40% {opacity: 1;}
+    }
+
+    .simplecep-loading-indicator {
+        pointer-events: none;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 250ms;
+        padding-right: 0.5em;
+    }
+
+    .simplecep-loading-indicator.visible {
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .simplecep-loading-indicator span {
+        animation: slidein 1s ease-in-out 0ms infinite;
+        background-color: #CCC;
+        border-radius: 0.5em;
+        height: 0.5em;
+        vertical-align: top;
+        width: 0.5em;
+    }
+
+    .simplecep-loading-indicator span:nth-of-type(2n) {
+        animation-delay: 160ms;
+        margin-left: 0.25em;
+    }
+    .simplecep-loading-indicator span:nth-of-type(3n) {
+        animation-delay: 320ms;
+        margin-left: 0.25em;
+    }
+</style>
+<span class="simplecep-loading-indicator" id="{{ widget.attrs.id }}_loading-indicator">
+    <span></span>
+    <span></span>
+    <span></span>
+</span>

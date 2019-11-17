@@ -7,7 +7,21 @@ from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from simplecep.models import Cep
+
+class CepFieldWidget(forms.TextInput):
+    template_name = "simplecep/widgets/cep.html"
+
+    def __init__(self, attrs=None, show_loading=True):
+        self.show_loading = show_loading
+        super().__init__(attrs)
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context["show_loading"] = self.show_loading
+        return context
+
+    class Media:
+        js = ("simplecep/simplecep-autofill.js",)
 
 
 class CEPBoundField(forms.BoundField):
@@ -74,11 +88,12 @@ class CEPBoundField(forms.BoundField):
                     },
                     sort_keys=True,
                 )
-
         return attrs
 
 
 class CEPField(forms.CharField):
+    widget = CepFieldWidget
+
     default_error_messages = {
         "invalid_format": _("Invalid CEP format"),
         "not_found": _("CEP not found"),
@@ -97,6 +112,8 @@ class CEPField(forms.CharField):
         return "".join(match.groups())
 
     def validate_exists(self, cep):
+        from simplecep.models import Cep
+
         if not Cep.objects.filter(pk=cep).exists():
             raise ValidationError(self.error_messages["not_found"], code="not_found")
 
