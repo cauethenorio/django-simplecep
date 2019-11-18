@@ -25,7 +25,7 @@ def get_merged_settings():
     return merged
 
 
-SETTINGS = get_merged_settings()
+simplecep_settings = get_merged_settings()
 
 
 class CEPAddress:

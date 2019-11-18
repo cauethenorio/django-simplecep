@@ -3,15 +3,15 @@ from typing import List
 from django.utils.module_loading import import_string
 from django.core.exceptions import ImproperlyConfigured
 
-from ..settings import SETTINGS
-from .base import BaseCEPProvider  # noqa
+from ..conf import simplecep_settings
+from .base import BaseCEPProvider
 
 
 def get_installed_providers():
     providers_ids = set()
     providers: List[BaseCEPProvider] = []
 
-    for provider_path in SETTINGS["PROVIDERS"]:
+    for provider_path in simplecep_settings["PROVIDERS"]:
         CEPProvider = import_string(provider_path)
         provider = CEPProvider()
 
