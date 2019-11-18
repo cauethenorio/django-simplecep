@@ -1,5 +1,19 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+from .conf import CEPAddress, simplecep_settings
+
+
+class ValidCepsManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                updated_at__gte=timezone.now() - simplecep_settings["CEP_CACHE_TIMEOUT"]
+            )
+        )
 
 
 class CachedCep(models.Model):
@@ -10,4 +24,22 @@ class CachedCep(models.Model):
     street = models.CharField(_("Address"), max_length=128, null=True)
 
     provider = models.CharField(_("Provider"), max_length=128)
-    updated_at = models.DateTimeField(_("Updated at"), auto_now=True)
+    updated_at = models.DateTimeField(_("Updated at"), auto_now=True, db_index=True)
+
+    valid_ceps = ValidCepsManager()
+    all_ceps = models.Manager()
+
+    @classmethod
+    def update_from_cep_address(cls, cep_address: CEPAddress):
+        cls.all_ceps.update_or_create(
+            cep=cep_address.cep, defaults=cep_address.to_dict()
+        )
+
+    def to_cep_address(self) -> CEPAddress:
+        return CEPAddress(
+            cep=self.cep,
+            street=self.street,
+            state=self.state,
+            neighborhood=self.neighborhood,
+            city=self.city,
+        )
