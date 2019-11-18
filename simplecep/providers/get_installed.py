@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Type
 
 from django.utils.module_loading import import_string
 from django.core.exceptions import ImproperlyConfigured
@@ -12,17 +12,19 @@ def get_installed_providers():
     providers: List[BaseCEPProvider] = []
 
     for provider_path in simplecep_settings["PROVIDERS"]:
-        CEPProvider = import_string(provider_path)
-        provider = CEPProvider()
+        CEPProvider: Type[BaseCEPProvider] = import_string(provider_path)
+        provider = CEPProvider(simplecep_settings["PROVIDERS_TIMEOUT"])
 
         if not hasattr(provider, "provider_id"):
             raise ImproperlyConfigured(
-                "The {} CEP provider is missing the id propery".format(provider_path)
+                "The {} CEP provider is missing the provider_id propery".format(
+                    provider_path
+                )
             )
         if provider.provider_id in providers_ids:
             raise ImproperlyConfigured(
-                "More than one provider was created using the same id: {}".format(
-                    provider.id
+                "More than one provider was created using the same provider_id: {}".format(
+                    provider.provider_id
                 )
             )
         providers.append(provider)

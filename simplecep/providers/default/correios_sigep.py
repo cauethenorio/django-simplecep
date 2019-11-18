@@ -1,8 +1,7 @@
 from typing import Dict, Optional
 from xml.etree import cElementTree as ET
-from urllib.error import HTTPError
 
-from ..base import BaseCEPProvider, CEPAddress
+from ..base import BaseCEPProvider, CEPAddress, CepProviderFetchError
 
 
 class CorreiosSIGEPCEPProvider(BaseCEPProvider):
@@ -71,8 +70,9 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
                 method="POST",
                 response_encoding="latin1",
             )
-        except HTTPError as e:
-            if self.is_cep_not_found_error(e):
+        except CepProviderFetchError as e:
+            original_exc = e.args[0]
+            if self.is_cep_not_found_error(original_exc):
                 return None
             raise
 

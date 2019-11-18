@@ -2,7 +2,7 @@ import abc
 import re
 import socket
 from urllib.request import urlopen, Request
-from urllib.error import URLError, HTTPError
+from urllib.error import URLError
 
 from typing import Optional, Dict
 
@@ -18,8 +18,8 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
     # all providers should have an identifier */
     provider_id = None
 
-    def __init(self):
-        pass
+    def __init__(self, timeout: float = None):
+        self.timeout = timeout
 
     def request(
         self, url, method="GET", data=None, response_encoding="utf-8", headers=None
@@ -29,7 +29,7 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
         """
         req = Request(url, data=data, method=method, headers=headers or {})
         try:
-            return urlopen(req, timeout=0.1).read().decode(response_encoding)
+            return urlopen(req, timeout=self.timeout).read().decode(response_encoding)
         except (URLError, socket.timeout) as error:
             raise CepProviderFetchError(error)
 
