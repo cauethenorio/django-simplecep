@@ -1,38 +1,44 @@
+from contextlib import contextmanager
+from unittest.mock import patch, Mock
+from urllib.error import URLError
+
+
+@contextmanager
+def mock_urlopen():
+    with patch("simplecep.providers.base.urlopen") as mock_urlopen:
+        mock_response = Mock()
+        mock_response.read.side_effect = [URLError("Network error")]
+        mock_urlopen.return_value = mock_response
+        yield
+
+
 TEST_DATA = [
     {
-        "address": "Praça da Sé",
+        "street": "Praça da Sé",
         "cep": "01001000",
         "city": "São Paulo",
-        "district": "Sé",
-        "extra": None,
-        "number": None,
+        "neighborhood": "Sé",
         "state": "SP",
     },
     {
-        "address": None,
+        "street": None,
         "cep": "18170000",
         "city": "Piedade",
-        "district": None,
-        "extra": None,
-        "number": None,
+        "neighborhood": None,
         "state": "SP",
     },
     {
-        "address": "Avenida Presidente Castelo Branco",
+        "street": "Avenida Presidente Castelo Branco",
         "cep": "62880970",
         "city": "Horizonte",
-        "district": "Centro",
-        "extra": " AC Horizonte",
-        "number": "4106 ",
+        "neighborhood": "Centro",
         "state": "CE",
     },
     {
-        "address": "Rodovia Mábio Gonçalves Palhano",
+        "street": "Rodovia Mábio Gonçalves Palhano",
         "cep": "86055991",
         "city": "Londrina",
-        "district": None,
-        "extra": "CPC Patrimônio Regina",
-        "number": "s/n",
+        "neighborhood": None,
         "state": "PR",
     },
 ]

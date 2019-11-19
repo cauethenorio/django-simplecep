@@ -1,4 +1,0 @@
-18170000	SP	Piedade
-01001000	SP	São Paulo	Sé	Praça da Sé
-62880970	CE	Horizonte	Centro	Avenida Presidente Castelo Branco	4106 	 AC Horizonte
-86055991	PR	Londrina		Rodovia Mábio Gonçalves Palhano	s/n	CPC Patrimônio Regina

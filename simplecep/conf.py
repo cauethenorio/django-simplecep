@@ -42,5 +42,8 @@ class CEPAddress:
         self.neighborhood = neighborhood
         self.street = street
 
+    def __repr__(self):
+        return f"<CEPAddress {self.cep}>"
+
     def to_dict(self):
         return self.__dict__
