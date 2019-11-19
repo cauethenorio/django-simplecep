@@ -148,3 +148,10 @@ class CEPFormTestCase(TestCase):
         self.assertIn(
             html_decode({"type": "state", "selector": "#some_node_id"}), field_html
         )
+
+    def test_cep_field_should_validate_cep(self):
+        class SimpleForm(forms.Form):
+            cep = CEPField()
+
+        form = SimpleForm({"cep": "123"})
+        form.is_valid()

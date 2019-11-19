@@ -8,6 +8,15 @@ from simplecep.providers import (
 
 
 class ProvidersTestCase(TestCase):
+    """
+    This TestCase make real requests to default providers to assure all values
+    are being correctly normalized and the app code is sync with APIs responses
+    format.
+
+    It doesn't run by default when running the test suite. To run it call:
+    ./runtests.py tests.heavy_test_providers_in_the_wild
+    """
+
     providers = (CorreiosSIGEPCEPProvider, RepublicaVirtualCEPProvider, ViaCEPProvider)
 
     def assert_providers_return_cep_address(self, cep, expected):

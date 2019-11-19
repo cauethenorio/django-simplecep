@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
+from simplecep.fetcher import get_cep_data
+
 
 class CepFieldWidget(forms.TextInput):
     template_name = "simplecep/widgets/cep.html"
@@ -104,7 +106,7 @@ class CEPField(forms.CharField):
         self.autofill_fields = autofill
 
     def validate_format(self, value: str) -> str:
-        match = re.match("^(\\d{5})-?(\\d{3})$", value)
+        match = re.match(r"^(\d{5})-?(\d{3})$", value)
         if match is None:
             raise ValidationError(
                 self.error_messages["invalid_format"], code="invalid_format"
@@ -112,9 +114,8 @@ class CEPField(forms.CharField):
         return "".join(match.groups())
 
     def validate_exists(self, cep):
-        from simplecep.models import Cep
-
-        if not Cep.objects.filter(pk=cep).exists():
+        cep = get_cep_data(cep)
+        if not cep:
             raise ValidationError(self.error_messages["not_found"], code="not_found")
 
     def clean(self, value: str):
