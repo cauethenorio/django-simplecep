@@ -50,7 +50,7 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
         Check if the 500 response is about a not found CEP.
         We don't want throw errors for that.
         """
-        if getattr(exc, "status", None) != 500:
+        if getattr(exc, "code", None) != 500:
             return False
 
         error_response = exc.read().decode("latin1")

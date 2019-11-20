@@ -19,7 +19,7 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
     provider_id = None
 
     def __init__(self, timeout: float = None):
-        self.timeout = timeout
+        self.timeout: float = timeout
 
     def request(
         self, url, method="GET", data=None, response_encoding="utf-8", headers=None

@@ -21,7 +21,9 @@ if __name__ == "__main__":
     test_runner = TestRunner()
 
     params = sys.argv[1:]
-    failures = test_runner.run_tests(params if len(params) else ["tests"])
+    failures = test_runner.run_tests(
+        params if len(params) else ["tests", "tests.providers"]
+    )
 
     cov.stop()
     cov.save()
