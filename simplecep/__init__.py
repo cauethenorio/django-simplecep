@@ -1,3 +1,3 @@
-from .fields import CEPField  # noqa
-from .conf import CEPAddress  # noqa
-from .fetcher import get_cep_data, NoCepProviderAvailable  # noqa
+from simplecep.core import CEPAddress, get_cep_data  # noqa
+from simplecep.fields import CEPField  # noqa
+from simplecep.providers import NoCepProviderAvailable  # noqa

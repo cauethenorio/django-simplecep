@@ -1,7 +1,8 @@
 from json import loads
 from typing import Optional
 
-from ..base import BaseCEPProvider, CEPAddress
+from simplecep import CEPAddress
+from simplecep.providers import BaseCEPProvider
 
 
 class ViaCEPProvider(BaseCEPProvider):

@@ -6,7 +6,7 @@ from urllib.error import URLError
 
 from typing import Optional, Dict
 
-from ..conf import CEPAddress
+from simplecep import CEPAddress
 
 
 class CepProviderFetchError(Exception):

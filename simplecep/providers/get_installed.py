@@ -3,8 +3,8 @@ from typing import List, Type
 from django.utils.module_loading import import_string
 from django.core.exceptions import ImproperlyConfigured
 
-from ..conf import simplecep_settings
-from .base import BaseCEPProvider
+from simplecep.conf import simplecep_settings
+from simplecep.providers.base import BaseCEPProvider
 
 
 def get_installed_providers():

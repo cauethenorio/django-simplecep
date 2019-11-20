@@ -1,7 +1,8 @@
 from typing import Dict, Optional
 from xml.etree import cElementTree as ET
 
-from ..base import BaseCEPProvider, CEPAddress, CepProviderFetchError
+from simplecep import CEPAddress
+from simplecep.providers import BaseCEPProvider, CepProviderFetchError
 
 
 class CorreiosSIGEPCEPProvider(BaseCEPProvider):

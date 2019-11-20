@@ -2,7 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from .conf import CEPAddress, simplecep_settings
+from simplecep import CEPAddress
+from simplecep.conf import simplecep_settings
 
 
 class ValidCepsManager(models.Manager):

@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from simplecep.fetcher import get_cep_data
+from simplecep.core import get_cep_data
 
 
 class CepFieldWidget(forms.TextInput):

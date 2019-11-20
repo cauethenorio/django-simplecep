@@ -1,5 +1,4 @@
 import datetime
-from typing import Optional
 
 from django.conf import settings
 
@@ -26,24 +25,3 @@ def get_merged_settings():
 
 
 simplecep_settings = get_merged_settings()
-
-
-class CEPAddress:
-    cep: str
-    street: Optional[str]
-    state: str
-    neighborhood: Optional[str]
-    city: str
-
-    def __init__(self, cep=None, state=None, city=None, neighborhood=None, street=None):
-        self.cep = cep
-        self.state = state
-        self.city = city
-        self.neighborhood = neighborhood
-        self.street = street
-
-    def __repr__(self):
-        return f"<CEPAddress {self.cep}>"
-
-    def to_dict(self):
-        return self.__dict__
