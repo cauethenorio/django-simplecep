@@ -5,7 +5,7 @@ from urllib.error import URLError
 
 @contextmanager
 def mock_urlopen():
-    with patch("simplecep.providers.base.urlopen") as mock_urlopen:
+    with patch("simplecep.providers.base.urlopen", autospec=True) as mock_urlopen:
         mock_response = Mock()
         mock_response.read.side_effect = [URLError("Network error")]
         mock_urlopen.return_value = mock_response

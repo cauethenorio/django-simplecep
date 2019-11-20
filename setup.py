@@ -1,13 +1,9 @@
 import os
 from setuptools import setup
 
-requirements = [
-    'Django>=2',
-]
+requirements = ["Django>=2"]
 
-test_requirements = [
-    "tox==3.12.1",
-]
+test_requirements = ["tox==3.12.1", "coverage==4.5.4"]
 
 dev_requirements = test_requirements + [
     "mypy==0.701",
@@ -16,7 +12,7 @@ dev_requirements = test_requirements + [
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.md')).read()
+README = open(os.path.join(here, "README.md")).read()
 
 setup(
     name="django-simple-cep",
@@ -30,22 +26,19 @@ setup(
     packages=["simplecep"],
     python_requires=">=3.5",
     install_requires=requirements,
-    extras_require={
-        "dev": dev_requirements,
-        "test": test_requirements,
-    },
-    keywords=['django', 'cep', 'correios', 'brasil', 'endereço'],
+    extras_require={"dev": dev_requirements, "test": test_requirements},
+    keywords=["django", "cep", "correios", "brasil", "endereço"],
     classifiers=[
-        'Operating System :: POSIX :: Linux',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Intended Audience :: Developers',
-        'Framework :: Django',
-        'Environment :: Web Environment',
-        'License :: OSI Approved :: MIT License',
-        'Intended Audience :: Developers',
-        'Natural Language :: English',
+        "Operating System :: POSIX :: Linux",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Intended Audience :: Developers",
+        "Framework :: Django",
+        "Environment :: Web Environment",
+        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: Developers",
+        "Natural Language :: English",
     ],
     zip_safe=False,
 )

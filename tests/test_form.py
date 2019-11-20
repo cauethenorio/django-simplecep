@@ -13,7 +13,7 @@ def html_decode(html_fragment) -> str:
     return html.escape(json.dumps(html_fragment, sort_keys=True))
 
 
-@patch("simplecep.fields.get_cep_data")
+@patch("simplecep.fields.get_cep_data", autospec=True)
 class CEPFormTestCase(TestCase):
     def test_cep_field_format_validation(self, *args):
         invalid_format_message = CEPField.default_error_messages["invalid_format"]

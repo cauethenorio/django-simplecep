@@ -8,7 +8,7 @@ from simplecep import CEPAddress, NoAvailableCepProviders
 
 
 class ViewTestCase(TestCase):
-    @patch("simplecep.views.get_cep_data")
+    @patch("simplecep.views.get_cep_data", autospec=True)
     def test_view_existing_cep_should_return_cep_data(self, mocked_get_cep_data):
         for cep_data in TEST_DATA:
             mocked_get_cep_data.return_value = CEPAddress(
@@ -24,7 +24,7 @@ class ViewTestCase(TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json(), cep_data)
 
-    @patch("simplecep.views.get_cep_data")
+    @patch("simplecep.views.get_cep_data", autospec=True)
     def test_view_inexistent_cep_should_return_404_error(self, mocked_get_cep_data):
         mocked_get_cep_data.return_value = None
         response = self.client.get(
@@ -33,7 +33,7 @@ class ViewTestCase(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "cep_not_found"})
 
-    @patch("simplecep.views.get_cep_data")
+    @patch("simplecep.views.get_cep_data", autospec=True)
     def test_view_should_return_error_when_no_providers_are_available(
         self, mocked_get_cep_data
     ):
