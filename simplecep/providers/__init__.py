@@ -5,4 +5,8 @@ from .default import (
     RepublicaVirtualCEPProvider,
 )  # noqa
 from .get_installed import get_installed_providers  # noqa
-from .fetcher import get_installed_providers, NoAvailableCepProviders  # noqa
+from .fetcher import (
+    fetch_from_providers,
+    get_installed_providers,
+    NoAvailableCepProviders,
+)  # noqa

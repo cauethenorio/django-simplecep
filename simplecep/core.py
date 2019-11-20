@@ -28,19 +28,3 @@ class CEPAddress:
             field: getattr(self, field)
             for field in "cep street state neighborhood city".split(" ")
         }
-
-
-def get_cep_data(cep: str) -> Optional[CEPAddress]:
-    # avoid loading models on app setup
-    from simplecep.cache import get_installed_cache
-    from simplecep.providers.fetcher import fetch_from_providers
-
-    cep_cache = get_installed_cache()
-
-    try:
-        return cep_cache[cep]
-    except KeyError:
-        cep_address = fetch_from_providers(cep)
-        if cep_address:
-            cep_cache[cep] = cep_address
-            return cep_address
