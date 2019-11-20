@@ -59,8 +59,10 @@ class ProvidersDataTestCase(TestCase):
             for test_data in providers_tests_data:
                 cep = test_data["input"]
                 expected_result = test_data["expected_result"]
+
                 with self.subTest(test_data=test_data):
                     for provider in providers:
+
                         with self.subTest(provider=provider.__class__.__name__):
                             cep_address = provider.get_cep_data(cep)
                             if expected_result is None:

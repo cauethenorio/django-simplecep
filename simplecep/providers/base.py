@@ -42,7 +42,7 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
         Remove numbers from street names (i.e. post office agency CEPs)
         """
         if street is not None:
-            match = re.match(r"^([^,]+),?\s\d+$", street)
+            match = re.match(r"^([^,]+),?\s(\d+|s/n)$", street)
             if match is not None:
                 return match.groups()[0]
             return street
