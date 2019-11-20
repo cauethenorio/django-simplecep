@@ -3,36 +3,36 @@ from setuptools import setup
 
 requirements = ["Django>=2"]
 
-test_requirements = ["tox==3.12.1", "coverage==4.5.4"]
+test_requirements = ["tox==3.14.1", "coverage==4.5.4"]
 
 dev_requirements = test_requirements + [
-    "mypy==0.701",
-    "flake8-bugbear==19.3.0",
-    "black==19.3b0",
+    "mypy==0.740",
+    "flake8-bugbear==19.8.0",
+    "black==19.10b0",
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, "README.md")).read()
 
 setup(
-    name="django-simple-cep",
+    name="django-simplecep",
     version="0.1.0",
-    description="Populated brazilian Correios CEP table into your django app",
+    description="Validate brazilian zipcode (CEP) and auto-populate address fields using Correios API data",
     long_description=README,
     license="MIT",
-    url="https://github.com/cauethenorio/django-simple-cep",
+    url="https://github.com/cauethenorio/django-simplecep",
     author="Cauê Thenório",
     author_email="caue@thenorio.com.br",
     packages=["simplecep"],
-    python_requires=">=3.5",
+    python_requires=">=3.6",
     install_requires=requirements,
     extras_require={"dev": dev_requirements, "test": test_requirements},
     keywords=["django", "cep", "correios", "brasil", "endereço"],
     classifiers=[
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
         "Intended Audience :: Developers",
         "Framework :: Django",
         "Environment :: Web Environment",
