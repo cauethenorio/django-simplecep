@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.test import TestCase
 
 from .utils import TEST_DATA
-from simplecep import CEPAddress, NoCepProviderAvailable
+from simplecep import CEPAddress, NoAvailableCepProviders
 
 
 class ViewTestCase(TestCase):
@@ -37,7 +37,7 @@ class ViewTestCase(TestCase):
     def test_view_should_return_error_when_no_providers_are_available(
         self, mocked_get_cep_data
     ):
-        mocked_get_cep_data.side_effect = NoCepProviderAvailable()
+        mocked_get_cep_data.side_effect = NoAvailableCepProviders()
         response = self.client.get(
             reverse("simplecep:get-cep", kwargs={"cep": "00000000"})
         )

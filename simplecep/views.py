@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.views import View
 
 
-from simplecep import get_cep_data, NoCepProviderAvailable
+from simplecep import get_cep_data, NoAvailableCepProviders
 
 
 class CEPView(View):
@@ -12,5 +12,5 @@ class CEPView(View):
             if cep:
                 return JsonResponse(cep.to_dict())
             return JsonResponse({"error": "cep_not_found"}, status=404)
-        except NoCepProviderAvailable:
+        except NoAvailableCepProviders:
             return JsonResponse({"error": "no_cep_provider_available"}, status=500)

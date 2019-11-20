@@ -7,7 +7,8 @@ from django.urls import reverse
 from django.urls.exceptions import NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 
-from simplecep.core import get_cep_data
+from simplecep import get_cep_data
+from simplecep.providers import NoAvailableCepProviders
 
 
 class CepFieldWidget(forms.TextInput):
@@ -99,6 +100,7 @@ class CEPField(forms.CharField):
     default_error_messages = {
         "invalid_format": _("Invalid CEP format"),
         "not_found": _("CEP not found"),
+        "no_available_providers": _("No available CEP providers at the moment"),
     }
 
     def __init__(self, *args, autofill=None, **kwargs):
@@ -114,9 +116,17 @@ class CEPField(forms.CharField):
         return "".join(match.groups())
 
     def validate_exists(self, cep):
-        cep = get_cep_data(cep)
-        if not cep:
-            raise ValidationError(self.error_messages["not_found"], code="not_found")
+        try:
+            cep = get_cep_data(cep)
+            if not cep:
+                raise ValidationError(
+                    self.error_messages["not_found"], code="not_found"
+                )
+        except NoAvailableCepProviders:
+            raise ValidationError(
+                self.error_messages["no_available_providers"],
+                code="no_available_providers",
+            )
 
     def clean(self, value: str):
         value = super().clean(value)

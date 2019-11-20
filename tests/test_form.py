@@ -6,7 +6,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import TestCase, override_settings
 from django import forms
 
-from simplecep.fields import CEPField
+from simplecep import CEPField, NoAvailableCepProviders
 
 
 def html_decode(html_fragment) -> str:
@@ -35,7 +35,7 @@ class CEPFormTestCase(TestCase):
             },
         )
 
-    def test_cep_field_not_found_validation(self, mocked_get_cep_data):
+    def test_cep_field_cep_not_found_validation(self, mocked_get_cep_data):
         not_found_message = CEPField.default_error_messages["not_found"]
         mocked_get_cep_data.return_value = None
         self.assertFieldOutput(
@@ -48,7 +48,7 @@ class CEPFormTestCase(TestCase):
             },
         )
 
-    def test_cep_field_found_validation(self, mocked_get_cep_data):
+    def test_cep_field_cep_found_validation(self, mocked_get_cep_data):
         # The real function will return a CEPAdress instance
         # but the fields only checks if it's null
         mocked_get_cep_data.return_value = True
@@ -61,6 +61,11 @@ class CEPFormTestCase(TestCase):
             },
             {},
         )
+
+    def test_cep_field_no_available_providers_validation(self, mocked_get_cep_data):
+        no_providers_message = CEPField.default_error_messages["no_available_providers"]
+        mocked_get_cep_data.side_effect = NoAvailableCepProviders()
+        self.assertFieldOutput(CEPField, {}, {"11111111": [no_providers_message]})
 
     def test_cep_field_maxlength_should_be_9_as_default(self, *args):
         class SimpleForm(forms.Form):
