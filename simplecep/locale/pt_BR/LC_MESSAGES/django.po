@@ -1,0 +1,59 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: django-simplecep\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-20 14:56-0600\n"
+"PO-Revision-Date: 2019-11-20 17:49-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: fields.py:101
+msgid "Invalid CEP format"
+msgstr "Formato de CEP inválido"
+
+#: fields.py:102
+msgid "CEP not found"
+msgstr "CEP não encontrado"
+
+#: fields.py:103
+msgid "No available CEP providers at the moment"
+msgstr "Nenhum provedor de CEP disponível no momento"
+
+#: models.py:21
+msgid "CEP"
+msgstr "CEP"
+
+#: models.py:22
+msgid "State"
+msgstr "Estado"
+
+#: models.py:23
+msgid "City"
+msgstr "Cidade"
+
+#: models.py:24
+msgid "District"
+msgstr "Bairro"
+
+#: models.py:25
+msgid "Address"
+msgstr "Endereço"
+
+#: models.py:27
+msgid "Provider"
+msgstr "Provedor"
+
+#: models.py:28
+msgid "Updated at"
+msgstr "Atualizado em"
