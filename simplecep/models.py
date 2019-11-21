@@ -17,11 +17,11 @@ class ValidCepsManager(models.Manager):
         )
 
 
-class CachedCep(models.Model):
+class CepCache(models.Model):
     cep = models.CharField(_("CEP"), max_length=8, primary_key=True)
     state = models.CharField(_("State"), max_length=2, null=False)
     city = models.CharField(_("City"), max_length=128, null=False)
-    neighborhood = models.CharField(_("Neighborhood"), max_length=128, null=True)
+    district = models.CharField(_("District"), max_length=128, null=True)
     street = models.CharField(_("Address"), max_length=128, null=True)
 
     provider = models.CharField(_("Provider"), max_length=128)
@@ -33,7 +33,7 @@ class CachedCep(models.Model):
     @classmethod
     def update_from_cep_address(cls, cep_address: CEPAddress):
         cls.all_ceps.update_or_create(
-            cep=cep_address.cep, defaults=cep_address.to_dict()
+            cep=cep_address.cep, defaults=cep_address.to_dict(with_provider=True)
         )
 
     def to_cep_address(self) -> CEPAddress:
@@ -41,6 +41,7 @@ class CachedCep(models.Model):
             cep=self.cep,
             street=self.street,
             state=self.state,
-            neighborhood=self.neighborhood,
+            district=self.district,
             city=self.city,
+            provider=self.provider,
         )

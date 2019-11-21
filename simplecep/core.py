@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 
 class CEPAddress:
@@ -8,23 +8,36 @@ class CEPAddress:
     """
 
     cep: str
-    street: Optional[str]
     state: str
-    neighborhood: Optional[str]
+    district: Optional[str]
+    street: Optional[str]
     city: str
+    provider: str
 
-    def __init__(self, cep=None, state=None, city=None, neighborhood=None, street=None):
+    _data_fields = "cep street state district city provider".split(" ")
+
+    def __init__(
+        self, cep=None, state=None, city=None, district=None, street=None, provider=None
+    ):
         self.cep = cep
         self.state = state
         self.city = city
-        self.neighborhood = neighborhood
+        self.district = district
         self.street = street
+        self.provider = provider
 
     def __repr__(self):
         return f"<CEPAddress {self.cep}>"
 
-    def to_dict(self):
-        return {
-            field: getattr(self, field)
-            for field in "cep street state neighborhood city".split(" ")
-        }
+    def __eq__(self, other: Any):
+        if not isinstance(other, CEPAddress):
+            return False
+
+        return all(getattr(self, f) == getattr(other, f) for f in self._data_fields)
+
+    def to_dict(self, with_provider=False):
+        data_fields = self._data_fields.copy()
+        if not with_provider:
+            data_fields.remove("provider")
+
+        return {field: getattr(self, field) for field in data_fields}

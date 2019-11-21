@@ -40,7 +40,7 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
                 "cep": fields["cep"],
                 "state": fields["uf"],
                 "city": fields["cidade"],
-                "neighborhood": fields.get("bairro"),
+                "district": fields.get("bairro"),
                 "street": fields.get("end"),
             }
         )

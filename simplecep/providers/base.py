@@ -48,27 +48,31 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
             return street
 
     def clean(self, fields: Dict) -> CEPAddress:
+        """
+        Subclasses should call this function sending the fields dict
+        """
         fields = self.extract_district(fields)
 
         return CEPAddress(
             cep=self.clean_cep(fields["cep"]),
             state=fields["state"],
             city=fields["city"],
-            neighborhood=fields.get("neighborhood"),
+            district=fields.get("district"),
             street=self.clean_street(fields.get("street")),
+            provider=self.provider_id,
         )
 
     def extract_district(self, original_fields: Dict):
         """
-        Extract the district name from the city name and send it as neighborhood
-        Example: 'Jaci Paraná (Porto Velho)' for 76840-000
+        Extract the Brazilian district name from the city name and send it as
+        district. Example: 'Jaci Paraná (Porto Velho)' for 76840-000
         """
         fields = original_fields.copy()
-        if fields.get("neighborhood") is None:
+        if fields.get("district") is None:
             match = re.match(r"^(.+)\s\((.+)\)$", fields["city"])
             if match:
-                neighborhood, city = match.groups()
-                fields["neighborhood"] = neighborhood
+                district, city = match.groups()
+                fields["district"] = district
                 fields["city"] = city
         return fields
 
@@ -77,7 +81,3 @@ class BaseCEPProvider(metaclass=abc.ABCMeta):
         """
         Return the CEP data
         """
-
-
-# 38612-044 created in Feb 2019
-# 38610-000 discarded in Feb 2019

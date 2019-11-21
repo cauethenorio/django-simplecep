@@ -5,14 +5,19 @@ from django.utils import timezone
 
 from simplecep.cache import CepDatabaseCache
 from simplecep.conf import simplecep_settings
-from simplecep.models import CachedCep
+from simplecep.models import CepCache
 from simplecep import CEPAddress
 
 
 class CepDatabaseCacheTestCase(TestCase):
     def get_sample_cep_address(self, cep="10000001"):
         return CEPAddress(
-            cep=cep, street="Rua", state="XX", neighborhood="Centro", city="Rio Redondo"
+            cep=cep,
+            street="Rua",
+            state="XX",
+            district="Centro",
+            city="Rio Redondo",
+            provider="fake",
         )
 
     def create_ceps_in_db(self, num_to_create=1):
@@ -20,12 +25,12 @@ class CepDatabaseCacheTestCase(TestCase):
         for n in range(num_to_create):
             cep = "{:0>8}".format(n)
             cep_address = self.get_sample_cep_address(cep=cep)
-            CachedCep.update_from_cep_address(cep_address)
+            CepCache.update_from_cep_address(cep_address)
             created.append(cep_address)
         return created
 
     def assert_num_ceps_in_db(self, num: int) -> None:
-        self.assertEqual(CachedCep.valid_ceps.count(), num)
+        self.assertEqual(CepCache.valid_ceps.count(), num)
 
     def test_assigning_should_add_to_cache(self):
         db_cache = CepDatabaseCache()
@@ -33,8 +38,7 @@ class CepDatabaseCacheTestCase(TestCase):
         db_cache["10000001"] = sample_cep_address
         self.assert_num_ceps_in_db(1)
         self.assertEqual(
-            CachedCep.valid_ceps.first().to_cep_address().to_dict(),
-            sample_cep_address.to_dict(),
+            CepCache.valid_ceps.first().to_cep_address(), sample_cep_address,
         )
 
     def test_assigning_with_wrong_cep_value_should_raise(self):
@@ -49,8 +53,7 @@ class CepDatabaseCacheTestCase(TestCase):
 
         self.assert_num_ceps_in_db(1)
         self.assertEqual(
-            db_cache[cep_address.cep].to_dict(),
-            CachedCep.valid_ceps.first().to_cep_address().to_dict(),
+            db_cache[cep_address.cep], CepCache.valid_ceps.first().to_cep_address(),
         )
 
     def test_getting_inexistent_should_raise_keyerror(self):
@@ -85,10 +88,10 @@ class CepDatabaseCacheTestCase(TestCase):
         one_sec = timedelta(seconds=1)
 
         # cep is still valid
-        CachedCep.all_ceps.update(updated_at=timeout_limit - one_sec)
+        CepCache.all_ceps.update(updated_at=timeout_limit - one_sec)
         with self.assertRaises(KeyError):
             _ = db_cache[sample_cep.cep]
 
         # cep is no longer valid
-        CachedCep.all_ceps.update(updated_at=timeout_limit + one_sec)
+        CepCache.all_ceps.update(updated_at=timeout_limit + one_sec)
         self.assertIsNotNone(db_cache[sample_cep.cep])

@@ -6,6 +6,7 @@ from urllib.error import HTTPError
 
 from django.test import TestCase
 
+from simplecep import CEPAddress
 from simplecep.providers.fetcher import providers
 from .providers_tests_data import providers_tests_data
 from .captured_responses import captured_responses
@@ -50,7 +51,7 @@ def patched_urlopen(req, timeout):
 
 
 class ProvidersDataTestCase(TestCase):
-    def test_valid_complete_cep(self):
+    def test_expected_providers_responses(self):
         # bye real urlopen and welcome our patched version which skips
         # real requests and return captured_responses.py file content
         with mock.patch(
@@ -63,9 +64,13 @@ class ProvidersDataTestCase(TestCase):
                 with self.subTest(test_data=test_data):
                     for provider in providers:
 
+                        if expected_result is not None:
+                            expected_cep_address = CEPAddress(
+                                provider=provider.provider_id, **expected_result
+                            )
+                        else:
+                            expected_cep_address = None
+
                         with self.subTest(provider=provider.__class__.__name__):
                             cep_address = provider.get_cep_data(cep)
-                            if expected_result is None:
-                                self.assertEqual(cep_address, expected_result)
-                            else:
-                                self.assertEqual(cep_address.to_dict(), expected_result)
+                            self.assertEqual(cep_address, expected_cep_address)

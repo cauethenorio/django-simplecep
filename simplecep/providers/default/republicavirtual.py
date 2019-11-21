@@ -45,7 +45,7 @@ class RepublicaVirtualCEPProvider(BaseCEPProvider):
                 "cep": cep,
                 "state": self.clean_state(fields["uf"]),
                 "city": fields["cidade"],
-                "neighborhood": fields.get("bairro"),
+                "district": fields.get("bairro"),
                 "street": fields.get("street"),
             }
         )

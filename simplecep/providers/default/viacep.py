@@ -27,7 +27,7 @@ class ViaCEPProvider(BaseCEPProvider):
                 "cep": fields["cep"],
                 "state": fields["uf"],
                 "city": fields["localidade"],
-                "neighborhood": fields.get("bairro"),
+                "district": fields.get("bairro"),
                 "street": fields.get("logradouro"),
             }
         )

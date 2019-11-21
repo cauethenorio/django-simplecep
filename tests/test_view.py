@@ -1,4 +1,4 @@
-from unittest.mock import patch, Mock
+from unittest.mock import patch
 
 from django.urls import reverse
 from django.test import TestCase
@@ -15,7 +15,7 @@ class ViewTestCase(TestCase):
                 cep=cep_data["cep"],
                 state=cep_data["state"],
                 city=cep_data["city"],
-                neighborhood=cep_data["neighborhood"],
+                district=cep_data["district"],
                 street=cep_data["street"],
             )
             response = self.client.get(

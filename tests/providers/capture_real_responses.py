@@ -4,9 +4,8 @@ import socket
 import sys
 import time
 from timeit import default_timer as timer
-from typing import Dict
 from unittest import mock
-from urllib.request import urlopen, Request
+from urllib.request import urlopen
 from urllib.error import URLError, HTTPError
 
 from black import format_str, FileMode
@@ -43,20 +42,18 @@ class UnexpectedNetworkError(Exception):
     """
 
 
-def convert_req_to_dict(req: Request) -> Dict:
-    return {
-        "full_url": req.full_url,
-        "method": req.method,
-        "headers": req.headers,
-        "data": req.data,
-    }
-
-
 def patched_urlopen(req, timeout):
     """
     Captures request and response data and store
     """
-    captured = {"request": convert_req_to_dict(req)}
+    captured = {
+        "request": {
+            "full_url": req.full_url,
+            "method": req.method,
+            "headers": req.headers,
+            "data": req.data,
+        }
+    }
     start_timer = timer()
 
     try:
