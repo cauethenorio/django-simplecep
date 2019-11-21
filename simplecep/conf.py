@@ -11,7 +11,7 @@ DEFAULT_SETTINGS = {
     ),
     "CACHE": "simplecep.cache.CepDatabaseCache",
     "PROVIDERS_TIMEOUT": 2,
-    "CEP_CACHE_TIMEOUT": datetime.timedelta(days=30 * 6),
+    "CEP_CACHE_MAXAGE": datetime.timedelta(days=30 * 6),
 }
 
 

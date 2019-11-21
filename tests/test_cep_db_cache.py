@@ -84,7 +84,7 @@ class CepDatabaseCacheTestCase(TestCase):
         (sample_cep,) = self.create_ceps_in_db(1)
         self.assertIsNotNone(db_cache[sample_cep.cep])
 
-        timeout_limit = timezone.now() - simplecep_settings["CEP_CACHE_TIMEOUT"]
+        timeout_limit = timezone.now() - simplecep_settings["CEP_CACHE_MAXAGE"]
         one_sec = timedelta(seconds=1)
 
         # cep is still valid

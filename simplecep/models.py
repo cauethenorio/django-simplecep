@@ -12,7 +12,7 @@ class ValidCepsManager(models.Manager):
             super()
             .get_queryset()
             .filter(
-                updated_at__gte=timezone.now() - simplecep_settings["CEP_CACHE_TIMEOUT"]
+                updated_at__gte=timezone.now() - simplecep_settings["CEP_CACHE_MAXAGE"]
             )
         )
 
