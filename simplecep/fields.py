@@ -127,6 +127,8 @@ class CEPField(forms.CharField):
                 self.error_messages["no_available_providers"],
                 code="no_available_providers",
             )
+        # we use this data in get-cep view
+        self.cep_data = cep
 
     def clean(self, value: str):
         value = super().clean(value)

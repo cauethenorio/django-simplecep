@@ -1,16 +1,27 @@
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse
 from django.views import View
 
 
-from simplecep import get_cep_data, NoAvailableCepProviders
+from simplecep import CEPField
 
 
 class CEPView(View):
+    errors_statuses = {
+        "invalid_format": 400,
+        "not_found": 404,
+        "no_available_providers": 500,
+    }
+
     def get(self, request, *args, cep=None):
+        cep_field = CEPField()
         try:
-            cep = get_cep_data(cep)
-            if cep:
-                return JsonResponse(cep.to_dict())
-            return JsonResponse({"error": "cep_not_found"}, status=404)
-        except NoAvailableCepProviders:
-            return JsonResponse({"error": "no_cep_provider_available"}, status=500)
+            cep_field.clean(cep)
+        except ValidationError as e:
+            return JsonResponse(
+                {"error": e.code, "message": e.message},
+                status=self.errors_statuses[e.code],
+            )
+
+        cep_data = cep_field.cep_data
+        return JsonResponse(cep_data.to_dict())
