@@ -67,6 +67,8 @@ class CepDatabaseCacheTestCase(TestCase):
         self.assert_num_ceps_in_db(1)
         del db_cache[cep_address.cep]
         self.assert_num_ceps_in_db(0)
+        with self.assertRaises(KeyError):
+            del db_cache[cep_address.cep]
 
     def test_iterating_should_read_all_cache_items(self):
         (sample1, sample2) = self.create_ceps_in_db(2)
