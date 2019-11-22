@@ -1,8 +1,8 @@
-from json import loads
+from json import loads, JSONDecodeError
 from typing import Optional
 
 from simplecep import CEPAddress
-from simplecep.providers import BaseCEPProvider
+from simplecep.providers import BaseCEPProvider, CepProviderFetchError
 
 
 class RepublicaVirtualCEPProvider(BaseCEPProvider):
@@ -13,9 +13,14 @@ class RepublicaVirtualCEPProvider(BaseCEPProvider):
         return f"http://cep.republicavirtual.com.br/web_cep.php?cep={self.clean_cep(cep)}&formato=json"
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
-        raw_fields = loads(
-            self.request(self.get_api_url(cep), headers={"Accept": "application/json"})
-        )
+        try:
+            raw_fields = loads(
+                self.request(
+                    self.get_api_url(cep), headers={"Accept": "application/json"}
+                )
+            )
+        except JSONDecodeError as e:
+            raise CepProviderFetchError(e)
 
         if int(raw_fields["resultado"]) > 0:
             return self.clean_and_add_cep(raw_fields, cep)
@@ -24,7 +29,7 @@ class RepublicaVirtualCEPProvider(BaseCEPProvider):
     def clean_state(self, state: str) -> str:
         """
         Republica Virtual API returns a different state value when searching
-        for a district address. (i.e. "RO  - Distrito" for 76840-000.
+        for a district address. (i.e. "RO  - Distrito" for 76840-000).
         So let's clean it!
         """
         return state.split(" ")[0].strip()

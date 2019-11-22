@@ -50,7 +50,7 @@ def patched_urlopen(req, timeout):
     )
 
 
-class ProvidersDataTestCase(TestCase):
+class ProvidersExpectedResponsesTestCase(TestCase):
     def test_expected_providers_responses(self):
         # bye real urlopen and welcome our patched version which skips
         # real requests and return captured_responses.py file content

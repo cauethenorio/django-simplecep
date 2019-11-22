@@ -1,8 +1,8 @@
-from json import loads
+from json import loads, JSONDecodeError
 from typing import Optional
 
 from simplecep import CEPAddress
-from simplecep.providers import BaseCEPProvider
+from simplecep.providers import BaseCEPProvider, CepProviderFetchError
 
 
 class ViaCEPProvider(BaseCEPProvider):
@@ -13,7 +13,11 @@ class ViaCEPProvider(BaseCEPProvider):
         return f"https://viacep.com.br/ws/{self.clean_cep(cep)}/json/unicode/"
 
     def get_cep_data(self, cep: str) -> Optional[CEPAddress]:
-        raw_fields = loads(self.request(self.get_api_url(cep)))
+        try:
+            raw_fields = loads(self.request(self.get_api_url(cep)))
+        except JSONDecodeError as e:
+            raise CepProviderFetchError(e)
+
         if raw_fields.get("erro") is not True:
             return self.clean(raw_fields)
         return None

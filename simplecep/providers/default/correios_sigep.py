@@ -29,7 +29,10 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
         )
 
     def unenvelope(self, response: str) -> Optional[Dict]:
-        return_node = ET.fromstring(response).find(".//return")
+        try:
+            return_node = ET.fromstring(response).find(".//return")
+        except ET.ParseError as e:
+            raise CepProviderFetchError(e)
         if return_node is not None:
             return {field.tag: field.text for field in return_node}
         return None
