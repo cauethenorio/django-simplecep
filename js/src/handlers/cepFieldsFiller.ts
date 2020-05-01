@@ -1,6 +1,6 @@
 import {CepEvents, HandlerParams} from "../types";
 
-export const CepFieldsFillerInstallEvent = new CustomEvent(CepEvents.InstallHandler, {
+export const cepFieldsFillerInstallEvent = new CustomEvent(CepEvents.InstallHandler, {
     detail: {
         handlerName: "cepFieldsFiller",
         installer: cepFieldsFillerInstaller,

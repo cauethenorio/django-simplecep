@@ -1,15 +1,17 @@
 import {cepCleanerInstallEvent} from "./cepCleaner";
 import {cepValidatorInstallEvent} from "./cepValidator";
-import {CepFetcherInstallEvent} from "./cepFetcher";
+import {cepFetcherInstallEvent} from "./cepFetcher";
 import {cepLoadingIndicatorInstallEvent} from "./cepLoadingIndicator";
-import {CepFieldsFillerInstallEvent} from "./cepFieldsFiller";
+import {cepFieldsLockerInstallEvent} from "./cepFieldsLocker";
+import {cepFieldsFillerInstallEvent} from "./cepFieldsFiller";
 import {cepFieldsAutoFocusInstallEvent} from "./cepFieldsAutoFocus";
 
 export const defaultInstallerEvents: Array<CustomEvent> = [
     cepCleanerInstallEvent,
     cepValidatorInstallEvent,
-    CepFetcherInstallEvent,
+    cepFetcherInstallEvent,
     cepLoadingIndicatorInstallEvent,
-    CepFieldsFillerInstallEvent,
+    cepFieldsLockerInstallEvent,
+    cepFieldsFillerInstallEvent,
     cepFieldsAutoFocusInstallEvent,
 ];

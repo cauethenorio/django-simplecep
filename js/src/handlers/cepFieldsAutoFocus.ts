@@ -15,7 +15,7 @@ function cepFieldsAutoFocusInstaller({quickAddEventListener}: HandlerParams) {
                 for (const el of els) {
                     // search for the first element which is a form field
                     // attached to the field type
-                    if (formFieldsTags.indexOf(el.tagName.toLowerCase()) >= 0) {
+                    if (formFieldsTags.indexOf(el.tagName) >= 0) {
                         el.focus();
                         return;
                     }
@@ -25,4 +25,4 @@ function cepFieldsAutoFocusInstaller({quickAddEventListener}: HandlerParams) {
     });
 }
 
-const formFieldsTags = ["input", "select", "textarea"];
+const formFieldsTags = ["INPUT", "SELECT", "TEXTAREA"];

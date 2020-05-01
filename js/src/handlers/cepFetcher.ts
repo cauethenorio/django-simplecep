@@ -19,7 +19,7 @@ type CepDataType = {[key in DataFieldType]: string | null};
         With CEP data or error, when the request is finished (with error or not).
  */
 
-export const CepFetcherInstallEvent = new CustomEvent(CepEvents.InstallHandler, {
+export const cepFetcherInstallEvent = new CustomEvent(CepEvents.InstallHandler, {
     detail: {
         handlerName: "cepFetcher",
         installer: cepFetcherInstaller,
