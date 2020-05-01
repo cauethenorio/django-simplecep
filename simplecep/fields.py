@@ -28,7 +28,7 @@ class CepFieldWidget(forms.TextInput):
 
 
 class CEPBoundField(forms.BoundField):
-    valid_field_types = ("state", "city", "district", "address")
+    valid_field_types = ("state", "city", "district", "street", "street_number")
 
     @staticmethod
     def get_getcep_url():
@@ -48,10 +48,16 @@ class CEPBoundField(forms.BoundField):
         invalid_fields = list(fields_keys - valid_field_types)
         if len(invalid_fields):
             raise ImproperlyConfigured(
-                "Invalid CEPField autofill param field "
-                "type(s): {}. Valid types: {}".format(invalid_fields, valid_field_types)
+                "Invalid CEPField autofill field type(s): {}. "
+                "Valid types: {}".format(invalid_fields, valid_field_types)
             )
-        return self.field.autofill_fields
+
+        # send the fields sorted by valid_field_types order
+        # the order is important to focus on next empty field via js
+        return [
+            (k, self.field.autofill_fields[k])
+            for k in sorted(fields_keys, key=lambda k: valid_field_types.index(k))
+        ]
 
     def get_field_id(self, field_name: str) -> str:
         # DOM node IDs are allowed - no field lookup will be made
@@ -77,7 +83,7 @@ class CEPBoundField(forms.BoundField):
         if self.field.autofill_fields is not None:
             fields = self.validate_and_get_fields()
 
-            if len(fields.keys()):
+            if len(fields):
                 attrs["data-simplecep-autofill"] = json.dumps(
                     {
                         "baseCepURL": self.get_getcep_url(),
@@ -86,7 +92,7 @@ class CEPBoundField(forms.BoundField):
                                 "type": field_type,
                                 "selector": self.get_field_id(field_name),
                             }
-                            for field_type, field_name in fields.items()
+                            for field_type, field_name in fields
                         ],
                     },
                     sort_keys=True,
