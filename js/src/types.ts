@@ -12,20 +12,30 @@ export type HandlerParams = {
     fieldData: AutofillFieldDataType;
     getCepURL: (cep: string) => string;
     getDataFields: () => Array<{type: DataFieldType; els: Array<HTMLElement>}>;
-    dispatch: (eventName: string, detail: any) => void;
-    addListener: (
+    quickDispatchEvent: (eventName: string, detail: any) => void;
+    quickAddEventListener: <D>(
         eventName: string,
-        listener: <D>(detail: D, e: CustomEvent<D>) => void
-    ) => void;
+        listener: (detail: D, e: CustomEvent<D>) => void
+    ) => () => void;
 };
 
 export enum CepEvents {
-    CepInputMasked = "simplecep-cep-input-masked",
-    ValidCepInput = "simplecep-valid-cep-input",
-    InvalidCepInput = "simplecep-invalid-cep-input",
-    CepFetchStart = "simplecep-cep-fetch-start",
-    CepFetchSuccess = "simplecep-cep-fetch-success",
-    CepFetchError = "simplecep-cep-fetch-error",
-    CepFetchIgnore = "simplecep-cep-fetch-ignore",
-    CepFetchFinish = "simplecep-cep-fetch-finish"
+    CEPValueCleaned = "simplecep.CEPValueCleaned",
+    ValidCepInput = "simplecep.ValidCepInput",
+    InvalidCepInput = "simplecep.InvalidCepInput",
+    CepFetchStart = "simplecep.CepFetchStart",
+    CepFetchSuccess = "simplecep.CepFetchSuccess",
+    CepFetchError = "simplecep.CepFetchError",
+    CepFetchFinish = "simplecep.CepFetchFinish",
+    CepFieldsAutofilled = "simplecep.CepFieldsAutofilled",
+
+    InstallHandler = "simplecep.installHandler",
+    removeHandler = "simplecep.removeHandler",
 }
+
+export type InstallHandlerCustomEvent = CustomEvent<{
+    handlerName: string;
+    installer: (bla: any) => () => undefined;
+}>;
+
+export type UninstallHandlerCustomEvent = CustomEvent<{handlerName: string}>;

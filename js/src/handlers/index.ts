@@ -1,15 +1,15 @@
-import {HandlerParams} from "../types";
+import {cepCleanerInstallEvent} from "./cepCleaner";
+import {cepValidatorInstallEvent} from "./cepValidator";
+import {CepFetcherInstallEvent} from "./cepFetcher";
+import {cepLoadingIndicatorInstallEvent} from "./cepLoadingIndicator";
+import {CepFieldsFillerInstallEvent} from "./cepFieldsFiller";
+import {cepFieldsAutoFocusInstallEvent} from "./cepFieldsAutoFocus";
 
-import {cepInputHandler} from "./cep-input";
-import {fetchCepHandler} from "./fetch-cep";
-import {cepMaskHandler} from "./cep-mask";
-import {fillFields} from "./fill-fields";
-import {loadingIndicatorHandler} from "./loading-indicator";
-
-export const defaultHandlers: Array<(params: HandlerParams) => void> = [
-    cepInputHandler,
-    fetchCepHandler,
-    cepMaskHandler,
-    fillFields,
-    loadingIndicatorHandler
+export const defaultInstallerEvents: Array<CustomEvent> = [
+    cepCleanerInstallEvent,
+    cepValidatorInstallEvent,
+    CepFetcherInstallEvent,
+    cepLoadingIndicatorInstallEvent,
+    CepFieldsFillerInstallEvent,
+    cepFieldsAutoFocusInstallEvent,
 ];

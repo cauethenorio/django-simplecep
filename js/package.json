@@ -12,13 +12,14 @@
   "author": "Cauê Thenório <caue@thenorio.com.br>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^24.0.23",
-    "jest": "^24.9.0",
-    "prettier": "1.18.2",
-    "rollup": "^1.27.3",
-    "rollup-plugin-terser": "^5.1.2",
-    "rollup-plugin-typescript2": "^0.21.2",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.7.2"
-  }
+    "@types/jest": "^25.2.1",
+    "jest": "^25.5.3",
+    "prettier": "^2.0.5",
+    "rollup": "^2.7.6",
+    "rollup-plugin-terser": "^5.3.0",
+    "rollup-plugin-typescript2": "^0.27.0",
+    "ts-jest": "^25.4.0",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {}
 }
