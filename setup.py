@@ -3,11 +3,11 @@ from setuptools import setup
 
 requirements = ["Django>=2"]
 
-test_requirements = ["tox==3.14.1", "coverage==4.5.4"]
+test_requirements = ["tox==3.14.6", "coverage==5.1"]
 
 dev_requirements = test_requirements + [
-    "mypy==0.740",
-    "flake8-bugbear==19.8.0",
+    "mypy==0.770",
+    "flake8-bugbear==20.1.4",
     "black==19.10b0",
 ]
 
@@ -19,6 +19,7 @@ setup(
     version="0.1.0",
     description="Validate brazilian zipcode (CEP) and auto-populate address fields using Correios API data",
     long_description=README,
+    long_description_content_type="text/markdown",
     license="MIT",
     url="https://github.com/cauethenorio/django-simplecep",
     author="Cauê Thenório",
@@ -42,3 +43,5 @@ setup(
     ],
     zip_safe=False,
 )
+
+# https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
