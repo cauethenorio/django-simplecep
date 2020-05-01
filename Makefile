@@ -9,10 +9,10 @@ black: ## reformat code with black
 black-lint: black lint
 
 test: ## run tests quickly with the default Python
-	coverage run --include="simplecep/*" manage.py test
+	cd tests && coverage run ../manage.py test
 
 coverage-report:
-	coverage html && open ./htmlcov/index.html
+	cd tests && coverage html && open ./coverage_html/index.html
 
 test-all: ## run tests on every Python version with tox
 	tox

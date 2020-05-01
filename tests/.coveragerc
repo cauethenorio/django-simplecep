@@ -1,0 +1,11 @@
+[run]
+branch = True
+source = simplecep
+
+[report]
+ignore_errors = True
+omit =
+    */tests/*
+
+[html]
+directory = coverage_html
