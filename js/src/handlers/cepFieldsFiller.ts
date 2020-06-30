@@ -12,7 +12,7 @@ function cepFieldsFillerInstaller({
     quickAddEventListener,
     quickDispatchEvent,
 }: HandlerParams) {
-    return quickAddEventListener(CepEvents.CepFetchSuccess, (cepData: any) => {
+    return quickAddEventListener(CepEvents.CepFetchSuccess, (cepData: CepDataType) => {
         const fields = getDataFields();
         fields.forEach(({type, els}) => {
             const val = cepData[type];

@@ -24,7 +24,7 @@ class CorreiosSIGEPCEPProvider(BaseCEPProvider):
                   </cli:consultaCEP>
                </soapenv:Body>
             </soapenv:Envelope>
-        """.strip(),
+            """.strip(),
             "ascii",
         )
 

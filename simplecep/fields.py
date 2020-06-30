@@ -60,10 +60,6 @@ class CEPBoundField(forms.BoundField):
         ]
 
     def get_field_id(self, field_name: str) -> str:
-        # DOM node IDs are allowed - no field lookup will be made
-        if field_name[0] in ("#", "."):
-            return field_name
-
         try:
             bound_field = self.form[field_name]
         except KeyError:

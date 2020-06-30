@@ -1,0 +1,31 @@
+{% load crispy_forms_tags %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha256-YLGeXaapI0/5IgZopewRJcFXomhRMlYYjugPLSyNjTY=" crossorigin="anonymous">
+    <title>Django SimpleCEP Example</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+          <h3 class="py-3 my-4 border-bottom">Django SimpleCEP Example</h3>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form|crispy }}
+                {{ form.media }}
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+            <form method="post" novalidate>
+                {% csrf_token %}
+                {{ form2|crispy }}
+                {{ form2.media }}
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

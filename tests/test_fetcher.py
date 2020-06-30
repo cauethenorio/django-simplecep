@@ -5,10 +5,6 @@ from django.test import TestCase
 from simplecep.fetcher import get_cep_data
 
 
-def dict_cache(path):
-    return dict
-
-
 @patch("simplecep.fetcher.fetch_from_providers")
 @patch("simplecep.fetcher.import_string")
 class FetcherTestCase(TestCase):

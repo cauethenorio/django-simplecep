@@ -93,7 +93,8 @@ class CEPFormTestCase(TestCase):
 
         with self.assertRaisesMessage(
             ImproperlyConfigured,
-            "Invalid CEPField autofill param field type(s): ['states']",
+            "Invalid CEPField autofill field type(s): ['states']. "
+            "Valid types: ('state', 'city', 'district', 'street', 'street_number')",
         ):
             form = SimpleForm()
             form["cep"].as_widget()
@@ -126,7 +127,8 @@ class CEPFormTestCase(TestCase):
 
     def test_cep_field_autofill_should_send_baseurl(self, *args):
         class SimpleForm(forms.Form):
-            cep = CEPField(autofill={"city": "#cidade"})
+            cep = CEPField(autofill={"city": "cidade"})
+            cidade = forms.CharField()
 
         form = SimpleForm()
         field_html = form["cep"].as_widget()
@@ -152,7 +154,7 @@ class CEPFormTestCase(TestCase):
         custom_id = "my_custom_id"
 
         class SimpleForm(forms.Form):
-            cep = CEPField(autofill={"address": "endereco"})
+            cep = CEPField(autofill={"street": "endereco"})
             endereco = forms.CharField(widget=forms.TextInput(attrs={"id": custom_id}))
 
         form = SimpleForm()
@@ -160,20 +162,5 @@ class CEPFormTestCase(TestCase):
 
         self.assertIn("data-simplecep-autofill", field_html)
         self.assertIn(
-            html_decode([{"type": "address", "selector": "#" + custom_id}]), field_html
-        )
-
-    def test_cep_field_empty_autofill_with_id_should_not_lookup_fields(self, *args):
-        class SimpleForm(forms.Form):
-            cep = CEPField(autofill={"state": "#some_node_id", "district": ".bairro"})
-
-        form = SimpleForm()
-        field_html = form["cep"].as_widget()
-
-        self.assertIn("data-simplecep-autofill", field_html)
-        self.assertIn(
-            html_decode({"type": "district", "selector": ".bairro"}), field_html
-        )
-        self.assertIn(
-            html_decode({"type": "state", "selector": "#some_node_id"}), field_html
+            html_decode([{"type": "street", "selector": "#" + custom_id}]), field_html
         )
